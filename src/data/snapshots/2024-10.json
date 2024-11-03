@@ -1,0 +1,668 @@
+{
+  "date": "2024-10",
+  "lists": [
+    {
+      "id": "187480803",
+      "name": "Организация и инициативи",
+      "numColumns": 5,
+      "columnsInfo": {
+        "to do": 3,
+        "definition": 4,
+        "in progress": 1,
+        "in review": 1,
+        "complete": 14
+      }
+    },
+    {
+      "id": "187480804",
+      "name": "Регулярен контрол и поддръжка",
+      "numColumns": 4,
+      "columnsInfo": {
+        "to do": 1,
+        "in progress": 1,
+        "in review": 0,
+        "complete": 0
+      }
+    }
+  ],
+  "kanbanColumns": {
+    "Организация и инициативи": {
+      "to do": [
+        {
+          "id": "2vdax60",
+          "name": "Падащи стъкла от последните етажи",
+          "status": "to do",
+          "date_created": "1664211032767",
+          "date_updated": "1671693754453",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2ttnz7x",
+          "name": "Липса на процес за събиране на големи нерешени проблеми и оформяне на инициативи",
+          "status": "to do",
+          "date_created": "1662879849379",
+          "date_updated": "1682497936368",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2k0dcyq",
+          "name": "Застраховка на машини и съоръжения в общи части",
+          "status": "to do",
+          "date_created": "1657807272866",
+          "date_updated": "1657807272866",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        }
+      ],
+      "definition": [
+        {
+          "id": "861mr6dwr",
+          "name": "Протокол за безпоасно зареждане на ЕПС (електрически превозни средства)",
+          "status": "definition",
+          "date_created": "1683139702418",
+          "date_updated": "1685376234256",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "861mpnt1a",
+          "name": "Поставяне на огледало на изхода от подземния паркинг",
+          "status": "definition",
+          "date_created": "1682236059173",
+          "date_updated": "1685376102817",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2v1whg8",
+          "name": "Използване на соларна енергия по субсидирана програма",
+          "status": "definition",
+          "date_created": "1663822256598",
+          "date_updated": "1684731978083",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2ttnz0r",
+          "name": "Високи енергийни разходи в спа центъра",
+          "status": "definition",
+          "date_created": "1662879259637",
+          "date_updated": "1693471596759",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        }
+      ],
+      "in progress": [
+        {
+          "id": "86bz4zr0e",
+          "name": "Частична подмяна на плочки по централната алея",
+          "status": "in progress",
+          "date_created": "1718023221391",
+          "date_updated": "1718024114849",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": [
+            {
+              "id": "fd21b89d-3ca2-4d5c-a794-489e23d3c67c.jpg",
+              "fileName": "IMG_20240610_082450512.jpg",
+              "base64Image": "data:image/jpeg;base64,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"
+            },
+            {
+              "id": "0fb5a2fd-cdd7-4893-adcb-58adfad6a6ad.jpg",
+              "fileName": "IMG_20240607_121827391.jpg",
+              "base64Image": "data:image/jpeg;base64,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"
+            },
+            {
+              "id": "9cb498d0-c41b-4631-8900-7b8d5476211a.jpg",
+              "fileName": "IMG_20240531_150055980.jpg",
+              "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABkAEoDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAAECAwQFBv/EADUQAAEDAgMFBQYGAwAAAAAAAAEAAhEDIRIxUQQiQWGRBRMycYFCUqGx0fAUI2JyksEzouH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAhEQEBAAICAQQDAAAAAAAAAAAAAQIRITESAxMUUTJBwf/aAAwDAQACEQMRAD8A+oD2VHuJdcHC0BU0NDr4iNC0pgWDeA1Q84WmBBNhCRhhaWAgEk3VDPwnoiIaMM24JgtaCTZT4ztW70THuLTAgEnjzTxPJIAHWVNNze6bvDw6qsTB7QKNETXElw3QQeegKQeQTvDokCC57ZvY5co/pEX1H2UcDlJJdVBxneaRYDz+qMJ4FyVQhrcQDiWGbDOM/grLxJhjo8kwABNiepUuEvY03g4jJn7uUm1aQjfACbHtNR7rmIFgTzP3yVJVA4NHRIiGOtwPyTDm6P8A4H6IqQKboDo/aeSAv2QOWnJHHKEEy8jC6Oionkfh9Utw9VmZFU/tHzKJNpkn7CTi7vgMJu08eYVFroybfn/xIyIlt/X5LnFYsAYY3bZLpIMeEH78lOEG5Y2fvkgKBMS51szCTCcImb3PqlU8OEWLiG9VphMyMkZDEgk8wGj9Q+arIXhZ1DLqYBEYr+gRBUVdsoUq7KNSq1tWp4Wnit7rwe2dm2mrt9Cps1PEWtFxFjK9xpJpguIBi/mom7buN88MccMcsbu3sGe+YJzxBal3ksKhaK9A4h4iM+RWrngCxBtqFWmO0PN/TUKSyTIdY8wqc8STIz94LLH+r/YJQWrNJjntJpgkAnL0H9qzTbxY3+IU2xE+mWiZ9OidKDu2e42f2hZVi1gDyxpwgmIC1kcui5O0CTstUD3Iy1R1Nqk3lI86p2jtFNwrGgHscI3BELo2fadqds5q1GhmN1mkZBeRS7RrbIbMxUzrwXTR22vtdXvKjcNJgmBx+qx8+O3o+xZl+M19/wA09+i7vWMc5omRNl0hp0OZHBcexz+DZizHLmuvEL5Z6LacyPPzms7Ig5ZcNAjDNw34BS6JF25kZLPEBa3RCG2AhoEGYvfipMjgVBpsBgUx/IqDSabOZ8Si6pzcaX0Kyr0TWZUZcEwJ0TbstEXNPylx+qKdFkOhntHiVWpot2XceWeyHTu1Qw8YBMran2U4AY6wfoCCI6L0hTbwb8UFg0WXhg6Pk+t9kxopbOWBzzDbnUrVxO9d+QKxewGk4CRLTkVFMYqTCala7B7a14c9tt3W7nXdvOsQckFrZN3dFiGm35lW495MEx/kq9Ug0i3hE5Zoj9Iz1UxJ8CYi26UrD2ZuYgZqaI/LBjOT8UASRY6oaYY1t8gneIn9q4ixugEWsfRSCLXKJEi6ham2IzWGzT3FPFYiW9DC2DrN31LPBmLPd8yqnSaJiLkQVBmbZK3Tfe4ylB1CcFWG3NzlqmRbMoQqSkz3bjPslI2a2NAhCL0IQeZGSYcc9AhCiqimGW01Lc6o0qH5BCEYiqLRewSDWkDdCEJh/9k="
+            }
+          ]
+        }
+      ],
+      "in review": [
+        {
+          "id": "86byct688",
+          "name": "Спиране навлизането на подпочвени води в част от мазетата и гаража",
+          "status": "in review",
+          "date_created": "1713343987310",
+          "date_updated": "1716875132078",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": [
+            {
+              "id": "7bafb177-9c66-4a77-9fbd-f0a18166bef6.jpg",
+              "fileName": "IMG_20240415_142956726.jpg",
+              "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABLAGQDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAgMEAAEFBv/EACkQAAICAQQBAwMFAQAAAAAAAAECABEDEiExQQQTUWEicaEUMoGxwUL/xAAYAQEBAQEBAAAAAAAAAAAAAAABAAIDBP/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A32g/1On3/Ex4BqeN7HeaqGICnaGJI/AB6glYkKfuG/cuHEEYr6KvuNXc3XP8yY0SPjeOxZCKU1KCnQWaj1vCuA9EFW47mg1Basm63+YsgAFu2PENroWbPvE5chD7dD8ypjjYwTyZovUZpkvLE7Yo7wNVmr37mPG80yIbg/5GCIU/FxoPttAnp+4S2+pL44DbnqUMwBkhEzXF2BuTOHMg5aWE9crB+bHtKBvvIGyKqHITY+JXia8YLCv8lBXch0ITI7JbVHeQ97A8RA4ow0xi1HiaC1A76v4mknmagD1CsGeT6x6uNw5snzXtNLF2rTcX6pv4isjO2wE4iGrZpGLcfm5MICrj1X3dVEY/LzPqyZRoF0Bf5i/UVUILXcjfMXwkqTXUWXov5X03qYnqp3Hm1MBRNDckyDxSuQ0oayeOxKU8Ty8eAgpp9V7NngQpen4zF71gaU3A+Y7H5gOBlXIWYfTq6JkPjo2J2TK6s/8AyFJqveVvjUYqCgXuRXMMRwbUQTwd5wsVJ7A6isOTUBfUZqvcDeZwi1EMQE1b8gzQBk0itzNFPmT5OMChW0H9cBwQDJ0xAqmlPqF23vGjAxP1AH5InXIxtdby3IBAJB7qPxYM+Zhbqti65IEWmI6gKoSpRX37MKWGFFyL9TZBR1ahQjcK4mXThUo6nsXYhIdx8QX3JN19jBOnH6WTWuxP4+0pxZXGDTqJ3vfeSFiaLMTUZjbYC+5Kixhm8hnIKtjN/e5c59THbbESXXvvCxvdrfMqIBcjI6i7F7mt5ajBlsHbqRuGo0LnRasSjfT7QaVkWTtNAx5kdAf72mmTrxG9QeSQSPT07CuDDYVGvzEZSbqdGHAfaGrb8Ra7n+YXzAmlzfx1OFrEWCdXMw3aSFxcPGbWB1CTiSUWaucskqRdgzL2J1RJKBVThFcb3zMDvCqyYEP01uJoYA9poB//2Q=="
+            },
+            {
+              "id": "ecaa3225-2c8d-474b-b7f7-cd118658e0cc.jpg",
+              "fileName": "IMG_20240416_083628900.jpg",
+              "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABLAGQDASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAQMAAgQFBv/EAC0QAAEDAwMDAwQBBQAAAAAAAAEAAhEDEiEEMUETUWEicYEFQqGxkRQyUtHw/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAECA//EABcRAQEBAQAAAAAAAAAAAAAAAAABEUH/2gAMAwEAAhEDEQA/APQQh4QfcW2tJbPPZAvtxBJ48rk6L8IeAhJImChNu4ygsg4wBxlVuBmMqTPZEXBub4VSRI48KAwfHhWhrnCSPCCOEK0CECZcg5xj0j8oCYCoUZxn8quCMIIoql4G6iga0tgCRtKNuyEDsMJdMGnTAbJE8lFMc2GmMTylPONpKL6zQ0nI8LgfV9bqmVn0mvdTA/x5+VR1/wCqpGs6n1A1zdwe3dWZXa4mDIXkC8z6QS7gASSup9L072uvrFzWRNs7+6qO+HzmCjecFu4MweVlFWe6ex8utuyg03iEvkmfgpLC5tVwtJAAJcSmMcHbEyOCoC48nhVEOAMbolkg+VUYMDZAH02uMmfhRWz3KigdwlhhBgGGcAbyrNA35QLoOxyqI5rQ3lYq3Sfh7A/j+2VscQWg7rHqTaJ+VRznMo0qhZQ0wa8/ccwnOjEAkn9pNTVUw8XCCczBVuu1j5dneIypYLtuaS5xOASCU/S13PqARKxGsHuc0kiWSCfdHTajo1L7SQNo7qSrjssgXOIhxKLI6m2EqlUDj6TIIEJtOIkBOBqo8chWOf8At0CqgSFEIlRQVbVFuJxwpdeTk7cJZeMAd9ype0MkRHhWC7pIy6MRhZK5zvwnuqAieFkruDgRKozVnhsScyszjBJ7o13NNdrRsBJhSocH2QEvb0btzaPyShTeS1rZgFw+Upomi4ExFv6Vxswjgysxp1NNULn7xK1v046lOoaj5bxOCuNpapbXaCeV3i8OO60ys052UO+6lwaFHFQHCiS++fSTHsogxl7r4kBn5VmkAySSfKUTgpdxkCcFUMruIbcMntKzVNR6bGgADzJTamzhxErFEPke6Cz3Rl3dK1Dz0nR2V6maJngpJyz3QVLj6hH3frCewhzHR9uPlZf9n9laqGCY5MqRVWEipO0LvaeoHgH+V5903uzu/P8AC6mlc6CJxCI6N05IRLwAlSQ1Iq1HhhIdlRWsvA5Ki4NfWahrwBU47BRNXH//2Q=="
+            },
+            {
+              "id": "33ac8d48-9627-4cea-a912-7cec604ce050.jpg",
+              "fileName": "IMG_20240416_083644374.jpg",
+              "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABkAEsDASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAwQAAQIFBv/EAC0QAAICAQMDBAEDBAMAAAAAAAECABEDEiExBEFREyJhcTJSgZEUI0LhocHx/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAECA//EABkRAQEAAwEAAAAAAAAAAAAAAAABAjFBEf/aAAwDAQACEQMRAD8A9uWAG8q5i73Mlzm0Jq8SrocwereVqgE1eZlsih6s2RxBuTobSfdW3aBRc9KXZGagCdNdtz/MKaupgmQK1XRqZy2hpuauBTHaCuWXsbTGsdzANqX1K/yq/qWWgH16i2NuQBv235mgxrf/ANgbZ+0sN7eIKxyf4lM1WYBQ2/Mi5kTIAzqpbjUaiq5SXYEUQAed4DrVGUB6tsdkfcmWiOvn63H/AE+YqfYEO/nac3F1HrKuTUSCo3P1BPmGbCgChR4EhYACTGdWjlvmDJUm6EC2UCBOff8A3No6paYO7XZ2HFzGvtKZwBZMgJYG4mGawRcRzda/qpiwY/Us+4g/jDHIe8oLq7mgfiZyMCjcWFv/AJgDlBb3BgAaP8bQbuShyCgCpTY8m7maQTUpxIy8kbwb5DXMGXpEXuQT9xd8td4x0UTLk8GouclmCy5Yucm/M0PTF+8T64ZM4GFKVDuzdx9QpahVn95hsgCktsB3gZwYk6dKS9+Se82cgUEkgbd4ll6yqGNbvjfmKg5cra8+y+DyYHSw9WjDJYB43i7Zh6Db0QxqzzcEHQOKFXzQi+ZmCEHTuQVIMzdhkdTePUQNR2A5qAdyYtkJGH2sRTcxI5jRosdjYvmWFPO9kj4uBq9xx8zK5MjaSxIrkHmb1D4lHUxdbquweNhfMxkzPmBUj29xOf0uosSTW0OX0A2bgFACkFt6Nqv6fqDy9TQu4nl6i39jfuPMW0ljbsT4HiA8mcFuSRq4JkJ92TbsTFkYLt8bmFz5ArYWIUhmo1/3Mis7uuDJougynjYRZTqN7fxLR2b18ZNGhzNFlxoABZlgou343xLHExvdnmUcm/8AqUMpkK3e0FnDPvrNeJZPBlBhxYMgwLSiRtL1DSfP3xL9RRZvaZBAYFDXn5EooN4YfVwXU5gEXSQVJq/FQWdxjtTyefqQqp6AMK/O9+0B5GHrNQHvUk/EBpbI60L8DyYXo8RfJiyOi+noNm97O0Jpx9PkV9ORQAVB5WT1SvVM2PHf4nbY8kTnO4Lk6sg38zpZ8h6jLqaq428QRxYmJLZAD40yoZZiBBufdQ227SSSAfBq+SLmzs1DiSSUDzH+3roWBUJ0dZCmJwCrDUfuSSTg6vpIopVrSdobJjVunKsLDCjJJMK4mX2Fgv66gzzJJOiP/9k="
+            },
+            {
+              "id": "3afa59a4-186b-4adc-9193-3e069c60b768.jpg",
+              "fileName": "IMG_20240416_083654349.jpg",
+              "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABkAEsDASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAgMAAQQFBv/EACYQAAICAQQBBAMBAQAAAAAAAAABAhEDEiExQQQTUWGRBSJxMqH/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAAf/aAAwDAQACEQMRAD8A721hJgkRhoZdgWy0wDXBfQF0XewBEsDUTUATFvktsEoNoGhlFUQAQJrYqgIC7CopoAWymyrt2t0R6r2TAuyWC1LsF88oDWlJ9MJQkwrLi0UCsT7aLWJXyGpJdFSywXMkgFLGnObd80vYJxjXCAlmx6tWpv4QqflJbKP2yKOVJbcCr+zE82SGppWrtu9wHnnW8pIQbpySTt0Znkx3/tGLJkb5Yl5NwjuvypdJIF5pc6q/hn1UTXewDnkk+ZP7JKahjjJ3+0qVLkQ5AR0+t6jvr6FU1+Qk6cJp3XAuWZS44F5msuaVQioUn8tgOSWy2RBTSdSWzbt/IvJOuyvU/Rfwz5J20VBZJitRTkBqA7Lk7+CakuxLkk9gXkAe57AuWzr2Yn1NgXkCmRnc5b8lZH7GeOSpv+B+pbIEzdRroS227NU9MlTQmUVuVCJTF6y8tIQ5blHZk92+2LcwXIXKRAzWDKbaF6ipOlyFEpfvfwGpbcmXXT/4E8iUHK9krZBocxOTKkjBm/IwSqClN/Ri8rzszdJ6Phcmkbs2eKVydf0wS/IYk2rbOfNzm25yk692LtLagPaNsVOTIQgVknKMZNdIT5PkTx4tUavbkhAOevJzZpyjKbilxp2JCc1kUFJpU9+2QgUOaT0SmnTT00uDNlbclbbb3t+5CFAuEV0C4ohCo//Z"
+            },
+            {
+              "id": "74adc024-c9b8-4ecf-bab9-7ed4e230c25b.jpg",
+              "fileName": "IMG_20240415_142922828.jpg",
+              "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABLAGQDASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAgMAAQQFBv/EACcQAAIBAwMEAgMBAQAAAAAAAAABAgMRIRIxQQQTUWEicTJCgQXR/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAEEAv/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A9BUmoIzSrybxgqvPVNrgVcxNYpTb3ZVwb8lpgR8ehtCSjPVIVciYwdFTi1hovHBztTXIUK8oy3uio38lPPgGE9UbkbAu6vbkFspyAcgDuiCnMhBmqz+buBquBWk1Ue3q4Cn6sUNuWpCdb+y1L7Ac5MtMVrViu5jADWytQrWytaA3dNUuh+o59Cq1UsuTQ5AN1rYpsSpO7BnUaW4DG3fBBOtvyQgV1CjUWqLyhdODkldpHmZ9ZX7r7NScNTtGCs2d3/PhUo0ZPrKuqq3jwl/DqzIS6dOSi2nwD3Ir9kK6mUJXg23K35pWyZaVNyqR1ydm83CujGopLDTL1YsJ0UoPEZe0pCqnenbttQV+QNSl7uyXtuLjKMbao/bRcZd6pG8PjbyyB9B3nfhGlzRirzjTjHQmnymDKc42lpi1s3d/9A2SqxStdgOeL2wZKbpxp9ucrtK7k8mWpUa+Kl+L/LOUB0e/F/s/4Q5keocY6W9vKuQYNFHpaNCOmnBY5eWOVt2GoecsW2tioRVleo2AmFXfz/gt5QB65pYsvoGN6krN4W7BvgZRxFtrcoa5pLJKNTTTcudkZqkvkFQd24sB86jlyUqjV0y3bgVJZTzkiiln0xVSN0NbbassFSWPogxuMZZd7kH6YPdEKOi3YS9xstgUlcIy9QndY4A23NXVYkrGWSV7+iio+wtSSsL8e2VLkCN3kH0+JsSP6fn6AapXbW2eS3G6CsrlzxPAAWaWwvUlLcbLkyxSc8ogNqzIDUk01nghB//Z"
+            }
+          ]
+        }
+      ],
+      "complete": [
+        {
+          "id": "861memq1v",
+          "name": "Провеждане на NPS анкета",
+          "status": "complete",
+          "date_created": "1677787350481",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "861me89p0",
+          "name": "Обсъждане на управление на месечната такса за озеленяване и снегопочистване с КМ",
+          "status": "complete",
+          "date_created": "1677605435900",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2vyac8m",
+          "name": "Уведомяване на ППМ за прекратяване на техните услуги",
+          "status": "complete",
+          "date_created": "1664557761996",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2ttpken",
+          "name": "Събиране на въпроси по дневния ред",
+          "status": "complete",
+          "date_created": "1662912967114",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2tm35fm",
+          "name": "Да се изискат партиди за ток, газ, вода",
+          "status": "complete",
+          "date_created": "1662722918664",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2tedqwb",
+          "name": "Процедура за \"Изравнителни Сметки\"",
+          "status": "complete",
+          "date_created": "1662652952056",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2tedqab",
+          "name": "Изясняване на въпроси за КМ (09.09.2022 г)",
+          "status": "complete",
+          "date_created": "1662652735973",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2tedpkq",
+          "name": "Банкова сметка за комплекс ВТ",
+          "status": "complete",
+          "date_created": "1662652517328",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2tednna",
+          "name": "Изясняване на дневен ред за общо събрание",
+          "status": "complete",
+          "date_created": "1662652298749",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2tedm69",
+          "name": "Правилник за Вътрешен Ред",
+          "status": "complete",
+          "date_created": "1662651776814",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2kbw2bh",
+          "name": "Списък с контакти на собственици",
+          "status": "complete",
+          "date_created": "1658238731094",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2gnx3gc",
+          "name": "Събиране на коментари от страна на контрольорите",
+          "status": "complete",
+          "date_created": "1656259727048",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2gnx3du",
+          "name": "Подготовка на финално предложение от страна на ВТ с работна група от юристи",
+          "status": "complete",
+          "date_created": "1656259488275",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        },
+        {
+          "id": "2gnx3ca",
+          "name": "Финализиране на оферта с променени параметри",
+          "status": "complete",
+          "date_created": "1656259330187",
+          "date_updated": "1730558665299",
+          "date_status_changed": null,
+          "listName": "Организация и инициативи",
+          "attachments": []
+        }
+      ]
+    },
+    "Регулярен контрол и поддръжка": {
+      "to do": [
+        {
+          "id": "2y36an6",
+          "name": "Почистване на Facebook група от стари контакти",
+          "status": "to do",
+          "date_created": "1666770904505",
+          "date_updated": "1666770904505",
+          "date_status_changed": null,
+          "listName": "Регулярен контрол и поддръжка",
+          "attachments": []
+        }
+      ],
+      "in progress": [
+        {
+          "id": "86bycr6u2",
+          "name": "Подобряване вида на зелените площи",
+          "status": "in progress",
+          "date_created": "1713341625155",
+          "date_updated": "1716872336373",
+          "date_status_changed": null,
+          "listName": "Регулярен контрол и поддръжка",
+          "attachments": [
+            {
+              "id": "9de11e0e-d19a-4cae-b58b-d934019eaa3e.jpg",
+              "fileName": "IMG_20240522_151107075_HDR.jpg",
+              "base64Image": "data:image/jpeg;base64,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"
+            },
+            {
+              "id": "e2fe6396-2b29-4341-bbea-627cf7e6f5ce.jpg",
+              "fileName": "IMG_20240415_084825982.jpg",
+              "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABkAEsDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAwQAAgUGAQf/xAA3EAACAQMCBQEEBwgDAAAAAAABAgMABBESIQUxQVFhEwYiMpEUcXKBsdHhFSMkQmKhwfBSgpL/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAdEQACAgIDAQAAAAAAAAAAAAAAAQIREiEDMVEi/9oADAMBAAIRAxEAPwD6dkd6FKwBHk1mR8SFrIY5maUkgAruDk8x/aiXF7HLg+/GqHfUhzmm1TEraKWU7CMBnZmVmUljk7MawXjJ43LJqI0k5GdjkmnhxDhkQf8AiJDrdidKHGSd98UG7PCbW6iWfQtzMfc1BiWNSolNjNqw1tuOVS4ureNcSTxKc8i4oErWjKUkhDqw5aKxrng/D3lVoFmhbUDgEFefY1cdKkRLb2dUM6RSl4d0HinAKSvT+9A7CrIFzVahrymIxRxPjNtJHNKkDtnGXIPXO4BFWk4/xIzRTXL2/oiQFo4iAQO1aLcF4RoVIuHTOF+HU2AKr+xeF6W12sEZ+0WJrjSadnRRzF7xq6F1II5dMbNq0gbYNb/tJIpvODzkEhm6HHPBo08tnZRAvdMkcYwNKAhR8qT9pXWew4bcwtqRZAwbPTHOtI2k7FKlRoyyBXUGqZy6/aFc5Nxh3cHVsWwCK1uG34upUTB1KRv3qOHl3iyZtNnXZ8Gkbw5nPgCtDFZ1zvPJ9ddRAvXmDViKqRTEcKfaDiTKubpmG+xqn7dvid3Vs+KGYYyN0GOmRVfokBx0+YrgzRrnEO/F554nSVVKkbjJFWk4vLNZRWkiAww/CM/5pUWakHRI24xVWtCqgCT5jlTyXo3KLLSsRh4wVD8hz3prhkkg4nZRRzOjPOhOnbIyNjSSRyiCXDA6QpHzxTHAUduP2JMZ92ZSSN8b86qK2T8+n1kkk1mSnMrn+o1oAnuKUNqx94ON99xXVZAuarimTayAc1P31Q20ueQ+dOwPnJIG7YI7CoNJORtmhZJGM/Ic6uoI94mvOokKgA35/hV2lhKEaQrcgc0AkFh26UzDZL6XrzahDn4gudR7DzQo2NK+iWVrJceqkIZiygZ85FHhSexbUoBljbUqHkG8jrRBxcLbmC2hSFEGVxuxPmmOG8XiKC3uLWLTnGoDf6963iq7NVBIuntbxCLaeyjf7JK/nTcPtrbDAntJ08qQ35UzNaWEiaha6T0KnBNJScEtGG0rK3UMARmtNj+fDTh9rOEybG4aM/1oRTQ47wsjIvrf/wB1ycns627I8bgHGfhpRvZ651H90T/3FGTHjEQDZOOlWG+BjOO3SixW/qsoCE6+QXf5VsQ2K2gDSopbpjkv61zR30ZRhYPhnCtQEtyPc5qh5n8hTM89vd5shGwRTkTL8KHt5+6giSfiUpgtiyw/zy9/ArUNkIoFhhALAYUf5raMDTUVSMVvZ5iT6dxEyNuG2Fe/QbWwlUzXIkl/lSPcGnvodzbnTHM4DcweRP1VQWB9QeqxaQ/280Ux2P20jSnWNgPhDciaYkYqrM65AHTegwRlQFQlVAwARmjOGzGvMFsnHYf6KpCaKxqixqjHDAb523qEHufnRHZW2Lc+hGPxoRjjz8IosBOytIbOLXtrIyznbb/ApeTXxSYRRhlg/wCXV/0o8MMnFnD59OzVuXWTHfxW0kEFqmvV8A3J5YqIR9LbpUheCOCxgCFNOO3U0YD0/fbGpuZG4A7CoqiRvVlXBI91T0HnzXhiAxoYp4HI/dVtkUUnCsmScYGcnYUCGJmjaUtoLfCCM4H686k5LzCCRcoBqkI3GOg8ZP4Ub1Q26nbvQgBhmU++ufK/lUhcSzSOjAhcIB1HU/74q7SenG0hOVUEmpBbq9unqKC5GSeRyd+dFAEK5U5Ax5oGlR0I++rlJI9lkJHZ9/70u1xKGINs5x1DLg0APyQpDCzxDQQOQ5H66FvJeIjH3Fj9THc561KlEhDIqPsQBUqVJQnaEmASn45Msx85x+Ar14UbLjKPjOV2z9fepUpgLBzLbwq2AJJlVsbbZ/StFRlgO5qVKokE5zoB+dIXE0iTMqtgVKlEuho//9k="
+            },
+            {
+              "id": "46701571-0b9e-4c65-b9ca-0a5dbbf3385d.jpg",
+              "fileName": "IMG_20240415_085234429.jpg",
+              "base64Image": "data:image/jpeg;base64,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"
+            }
+          ]
+        }
+      ],
+      "in review": [],
+      "complete": []
+    }
+  },
+  "listViewTasks": [
+    {
+      "id": "86bz4zr0e",
+      "name": "Частична подмяна на плочки по централната алея",
+      "status": "in progress",
+      "date_created": "1718023221391",
+      "date_updated": "1718024114849",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": [
+        {
+          "id": "fd21b89d-3ca2-4d5c-a794-489e23d3c67c.jpg",
+          "fileName": "IMG_20240610_082450512.jpg",
+          "base64Image": "data:image/jpeg;base64,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"
+        },
+        {
+          "id": "0fb5a2fd-cdd7-4893-adcb-58adfad6a6ad.jpg",
+          "fileName": "IMG_20240607_121827391.jpg",
+          "base64Image": "data:image/jpeg;base64,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"
+        },
+        {
+          "id": "9cb498d0-c41b-4631-8900-7b8d5476211a.jpg",
+          "fileName": "IMG_20240531_150055980.jpg",
+          "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABkAEoDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAAECAwQFBv/EADUQAAEDAgMFBQYGAwAAAAAAAAEAAhEDIRIxUQQiQWGRBRMycYFCUqGx0fAUI2JyksEzouH/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAhEQEBAAICAQQDAAAAAAAAAAAAAQIRITESAxMUUTJBwf/aAAwDAQACEQMRAD8A+oD2VHuJdcHC0BU0NDr4iNC0pgWDeA1Q84WmBBNhCRhhaWAgEk3VDPwnoiIaMM24JgtaCTZT4ztW70THuLTAgEnjzTxPJIAHWVNNze6bvDw6qsTB7QKNETXElw3QQeegKQeQTvDokCC57ZvY5co/pEX1H2UcDlJJdVBxneaRYDz+qMJ4FyVQhrcQDiWGbDOM/grLxJhjo8kwABNiepUuEvY03g4jJn7uUm1aQjfACbHtNR7rmIFgTzP3yVJVA4NHRIiGOtwPyTDm6P8A4H6IqQKboDo/aeSAv2QOWnJHHKEEy8jC6Oionkfh9Utw9VmZFU/tHzKJNpkn7CTi7vgMJu08eYVFroybfn/xIyIlt/X5LnFYsAYY3bZLpIMeEH78lOEG5Y2fvkgKBMS51szCTCcImb3PqlU8OEWLiG9VphMyMkZDEgk8wGj9Q+arIXhZ1DLqYBEYr+gRBUVdsoUq7KNSq1tWp4Wnit7rwe2dm2mrt9Cps1PEWtFxFjK9xpJpguIBi/mom7buN88MccMcsbu3sGe+YJzxBal3ksKhaK9A4h4iM+RWrngCxBtqFWmO0PN/TUKSyTIdY8wqc8STIz94LLH+r/YJQWrNJjntJpgkAnL0H9qzTbxY3+IU2xE+mWiZ9OidKDu2e42f2hZVi1gDyxpwgmIC1kcui5O0CTstUD3Iy1R1Nqk3lI86p2jtFNwrGgHscI3BELo2fadqds5q1GhmN1mkZBeRS7RrbIbMxUzrwXTR22vtdXvKjcNJgmBx+qx8+O3o+xZl+M19/wA09+i7vWMc5omRNl0hp0OZHBcexz+DZizHLmuvEL5Z6LacyPPzms7Ig5ZcNAjDNw34BS6JF25kZLPEBa3RCG2AhoEGYvfipMjgVBpsBgUx/IqDSabOZ8Si6pzcaX0Kyr0TWZUZcEwJ0TbstEXNPylx+qKdFkOhntHiVWpot2XceWeyHTu1Qw8YBMran2U4AY6wfoCCI6L0hTbwb8UFg0WXhg6Pk+t9kxopbOWBzzDbnUrVxO9d+QKxewGk4CRLTkVFMYqTCala7B7a14c9tt3W7nXdvOsQckFrZN3dFiGm35lW495MEx/kq9Ug0i3hE5Zoj9Iz1UxJ8CYi26UrD2ZuYgZqaI/LBjOT8UASRY6oaYY1t8gneIn9q4ixugEWsfRSCLXKJEi6ham2IzWGzT3FPFYiW9DC2DrN31LPBmLPd8yqnSaJiLkQVBmbZK3Tfe4ylB1CcFWG3NzlqmRbMoQqSkz3bjPslI2a2NAhCL0IQeZGSYcc9AhCiqimGW01Lc6o0qH5BCEYiqLRewSDWkDdCEJh/9k="
+        }
+      ]
+    },
+    {
+      "id": "86byct688",
+      "name": "Спиране навлизането на подпочвени води в част от мазетата и гаража",
+      "status": "in review",
+      "date_created": "1713343987310",
+      "date_updated": "1716875132078",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": [
+        {
+          "id": "7bafb177-9c66-4a77-9fbd-f0a18166bef6.jpg",
+          "fileName": "IMG_20240415_142956726.jpg",
+          "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABLAGQDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAgMEAAEFBv/EACkQAAICAQQBAwMFAQAAAAAAAAECABEDEiExQQQTUWEicaEUMoGxwUL/xAAYAQEBAQEBAAAAAAAAAAAAAAABAAIDBP/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A32g/1On3/Ex4BqeN7HeaqGICnaGJI/AB6glYkKfuG/cuHEEYr6KvuNXc3XP8yY0SPjeOxZCKU1KCnQWaj1vCuA9EFW47mg1Basm63+YsgAFu2PENroWbPvE5chD7dD8ypjjYwTyZovUZpkvLE7Yo7wNVmr37mPG80yIbg/5GCIU/FxoPttAnp+4S2+pL44DbnqUMwBkhEzXF2BuTOHMg5aWE9crB+bHtKBvvIGyKqHITY+JXia8YLCv8lBXch0ITI7JbVHeQ97A8RA4ow0xi1HiaC1A76v4mknmagD1CsGeT6x6uNw5snzXtNLF2rTcX6pv4isjO2wE4iGrZpGLcfm5MICrj1X3dVEY/LzPqyZRoF0Bf5i/UVUILXcjfMXwkqTXUWXov5X03qYnqp3Hm1MBRNDckyDxSuQ0oayeOxKU8Ty8eAgpp9V7NngQpen4zF71gaU3A+Y7H5gOBlXIWYfTq6JkPjo2J2TK6s/8AyFJqveVvjUYqCgXuRXMMRwbUQTwd5wsVJ7A6isOTUBfUZqvcDeZwi1EMQE1b8gzQBk0itzNFPmT5OMChW0H9cBwQDJ0xAqmlPqF23vGjAxP1AH5InXIxtdby3IBAJB7qPxYM+Zhbqti65IEWmI6gKoSpRX37MKWGFFyL9TZBR1ahQjcK4mXThUo6nsXYhIdx8QX3JN19jBOnH6WTWuxP4+0pxZXGDTqJ3vfeSFiaLMTUZjbYC+5Kixhm8hnIKtjN/e5c59THbbESXXvvCxvdrfMqIBcjI6i7F7mt5ajBlsHbqRuGo0LnRasSjfT7QaVkWTtNAx5kdAf72mmTrxG9QeSQSPT07CuDDYVGvzEZSbqdGHAfaGrb8Ra7n+YXzAmlzfx1OFrEWCdXMw3aSFxcPGbWB1CTiSUWaucskqRdgzL2J1RJKBVThFcb3zMDvCqyYEP01uJoYA9poB//2Q=="
+        },
+        {
+          "id": "ecaa3225-2c8d-474b-b7f7-cd118658e0cc.jpg",
+          "fileName": "IMG_20240416_083628900.jpg",
+          "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABLAGQDASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAQMAAgQFBv/EAC0QAAEDAwMDAwQBBQAAAAAAAAEAAhEDEiEEMUETUWEicYEFQqGxkRQyUtHw/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAECA//EABcRAQEBAQAAAAAAAAAAAAAAAAABEUH/2gAMAwEAAhEDEQA/APQQh4QfcW2tJbPPZAvtxBJ48rk6L8IeAhJImChNu4ygsg4wBxlVuBmMqTPZEXBub4VSRI48KAwfHhWhrnCSPCCOEK0CECZcg5xj0j8oCYCoUZxn8quCMIIoql4G6iga0tgCRtKNuyEDsMJdMGnTAbJE8lFMc2GmMTylPONpKL6zQ0nI8LgfV9bqmVn0mvdTA/x5+VR1/wCqpGs6n1A1zdwe3dWZXa4mDIXkC8z6QS7gASSup9L072uvrFzWRNs7+6qO+HzmCjecFu4MweVlFWe6ex8utuyg03iEvkmfgpLC5tVwtJAAJcSmMcHbEyOCoC48nhVEOAMbolkg+VUYMDZAH02uMmfhRWz3KigdwlhhBgGGcAbyrNA35QLoOxyqI5rQ3lYq3Sfh7A/j+2VscQWg7rHqTaJ+VRznMo0qhZQ0wa8/ccwnOjEAkn9pNTVUw8XCCczBVuu1j5dneIypYLtuaS5xOASCU/S13PqARKxGsHuc0kiWSCfdHTajo1L7SQNo7qSrjssgXOIhxKLI6m2EqlUDj6TIIEJtOIkBOBqo8chWOf8At0CqgSFEIlRQVbVFuJxwpdeTk7cJZeMAd9ype0MkRHhWC7pIy6MRhZK5zvwnuqAieFkruDgRKozVnhsScyszjBJ7o13NNdrRsBJhSocH2QEvb0btzaPyShTeS1rZgFw+Upomi4ExFv6Vxswjgysxp1NNULn7xK1v046lOoaj5bxOCuNpapbXaCeV3i8OO60ys052UO+6lwaFHFQHCiS++fSTHsogxl7r4kBn5VmkAySSfKUTgpdxkCcFUMruIbcMntKzVNR6bGgADzJTamzhxErFEPke6Cz3Rl3dK1Dz0nR2V6maJngpJyz3QVLj6hH3frCewhzHR9uPlZf9n9laqGCY5MqRVWEipO0LvaeoHgH+V5903uzu/P8AC6mlc6CJxCI6N05IRLwAlSQ1Iq1HhhIdlRWsvA5Ki4NfWahrwBU47BRNXH//2Q=="
+        },
+        {
+          "id": "33ac8d48-9627-4cea-a912-7cec604ce050.jpg",
+          "fileName": "IMG_20240416_083644374.jpg",
+          "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABkAEsDASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAwQAAQIFBv/EAC0QAAICAQMDBAEDBAMAAAAAAAECABEDEiExBEFREyJhcTJSgZEUI0LhocHx/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAECA//EABkRAQEAAwEAAAAAAAAAAAAAAAABAjFBEf/aAAwDAQACEQMRAD8A9uWAG8q5i73Mlzm0Jq8SrocwereVqgE1eZlsih6s2RxBuTobSfdW3aBRc9KXZGagCdNdtz/MKaupgmQK1XRqZy2hpuauBTHaCuWXsbTGsdzANqX1K/yq/qWWgH16i2NuQBv235mgxrf/ANgbZ+0sN7eIKxyf4lM1WYBQ2/Mi5kTIAzqpbjUaiq5SXYEUQAed4DrVGUB6tsdkfcmWiOvn63H/AE+YqfYEO/nac3F1HrKuTUSCo3P1BPmGbCgChR4EhYACTGdWjlvmDJUm6EC2UCBOff8A3No6paYO7XZ2HFzGvtKZwBZMgJYG4mGawRcRzda/qpiwY/Us+4g/jDHIe8oLq7mgfiZyMCjcWFv/AJgDlBb3BgAaP8bQbuShyCgCpTY8m7maQTUpxIy8kbwb5DXMGXpEXuQT9xd8td4x0UTLk8GouclmCy5Yucm/M0PTF+8T64ZM4GFKVDuzdx9QpahVn95hsgCktsB3gZwYk6dKS9+Se82cgUEkgbd4ll6yqGNbvjfmKg5cra8+y+DyYHSw9WjDJYB43i7Zh6Db0QxqzzcEHQOKFXzQi+ZmCEHTuQVIMzdhkdTePUQNR2A5qAdyYtkJGH2sRTcxI5jRosdjYvmWFPO9kj4uBq9xx8zK5MjaSxIrkHmb1D4lHUxdbquweNhfMxkzPmBUj29xOf0uosSTW0OX0A2bgFACkFt6Nqv6fqDy9TQu4nl6i39jfuPMW0ljbsT4HiA8mcFuSRq4JkJ92TbsTFkYLt8bmFz5ArYWIUhmo1/3Mis7uuDJougynjYRZTqN7fxLR2b18ZNGhzNFlxoABZlgou343xLHExvdnmUcm/8AqUMpkK3e0FnDPvrNeJZPBlBhxYMgwLSiRtL1DSfP3xL9RRZvaZBAYFDXn5EooN4YfVwXU5gEXSQVJq/FQWdxjtTyefqQqp6AMK/O9+0B5GHrNQHvUk/EBpbI60L8DyYXo8RfJiyOi+noNm97O0Jpx9PkV9ORQAVB5WT1SvVM2PHf4nbY8kTnO4Lk6sg38zpZ8h6jLqaq428QRxYmJLZAD40yoZZiBBufdQ227SSSAfBq+SLmzs1DiSSUDzH+3roWBUJ0dZCmJwCrDUfuSSTg6vpIopVrSdobJjVunKsLDCjJJMK4mX2Fgv66gzzJJOiP/9k="
+        },
+        {
+          "id": "3afa59a4-186b-4adc-9193-3e069c60b768.jpg",
+          "fileName": "IMG_20240416_083654349.jpg",
+          "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABkAEsDASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAgMAAQQFBv/EACYQAAICAQQBBAMBAQAAAAAAAAABAhEDEiExQQQTUWGRBSJxMqH/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAAf/aAAwDAQACEQMRAD8A721hJgkRhoZdgWy0wDXBfQF0XewBEsDUTUATFvktsEoNoGhlFUQAQJrYqgIC7CopoAWymyrt2t0R6r2TAuyWC1LsF88oDWlJ9MJQkwrLi0UCsT7aLWJXyGpJdFSywXMkgFLGnObd80vYJxjXCAlmx6tWpv4QqflJbKP2yKOVJbcCr+zE82SGppWrtu9wHnnW8pIQbpySTt0Znkx3/tGLJkb5Yl5NwjuvypdJIF5pc6q/hn1UTXewDnkk+ZP7JKahjjJ3+0qVLkQ5AR0+t6jvr6FU1+Qk6cJp3XAuWZS44F5msuaVQioUn8tgOSWy2RBTSdSWzbt/IvJOuyvU/Rfwz5J20VBZJitRTkBqA7Lk7+CakuxLkk9gXkAe57AuWzr2Yn1NgXkCmRnc5b8lZH7GeOSpv+B+pbIEzdRroS227NU9MlTQmUVuVCJTF6y8tIQ5blHZk92+2LcwXIXKRAzWDKbaF6ipOlyFEpfvfwGpbcmXXT/4E8iUHK9krZBocxOTKkjBm/IwSqClN/Ri8rzszdJ6Phcmkbs2eKVydf0wS/IYk2rbOfNzm25yk692LtLagPaNsVOTIQgVknKMZNdIT5PkTx4tUavbkhAOevJzZpyjKbilxp2JCc1kUFJpU9+2QgUOaT0SmnTT00uDNlbclbbb3t+5CFAuEV0C4ohCo//Z"
+        },
+        {
+          "id": "74adc024-c9b8-4ecf-bab9-7ed4e230c25b.jpg",
+          "fileName": "IMG_20240415_142922828.jpg",
+          "base64Image": "data:image/jpeg;base64,/9j/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABLAGQDASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAgMAAQQFBv/EACcQAAIBAwMEAgMBAQAAAAAAAAABAgMRIRIxQQQTUWEicTJCgQXR/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAEEAv/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A9BUmoIzSrybxgqvPVNrgVcxNYpTb3ZVwb8lpgR8ehtCSjPVIVciYwdFTi1hovHBztTXIUK8oy3uio38lPPgGE9UbkbAu6vbkFspyAcgDuiCnMhBmqz+buBquBWk1Ue3q4Cn6sUNuWpCdb+y1L7Ac5MtMVrViu5jADWytQrWytaA3dNUuh+o59Cq1UsuTQ5AN1rYpsSpO7BnUaW4DG3fBBOtvyQgV1CjUWqLyhdODkldpHmZ9ZX7r7NScNTtGCs2d3/PhUo0ZPrKuqq3jwl/DqzIS6dOSi2nwD3Ir9kK6mUJXg23K35pWyZaVNyqR1ydm83CujGopLDTL1YsJ0UoPEZe0pCqnenbttQV+QNSl7uyXtuLjKMbao/bRcZd6pG8PjbyyB9B3nfhGlzRirzjTjHQmnymDKc42lpi1s3d/9A2SqxStdgOeL2wZKbpxp9ucrtK7k8mWpUa+Kl+L/LOUB0e/F/s/4Q5keocY6W9vKuQYNFHpaNCOmnBY5eWOVt2GoecsW2tioRVleo2AmFXfz/gt5QB65pYsvoGN6krN4W7BvgZRxFtrcoa5pLJKNTTTcudkZqkvkFQd24sB86jlyUqjV0y3bgVJZTzkiiln0xVSN0NbbassFSWPogxuMZZd7kH6YPdEKOi3YS9xstgUlcIy9QndY4A23NXVYkrGWSV7+iio+wtSSsL8e2VLkCN3kH0+JsSP6fn6AapXbW2eS3G6CsrlzxPAAWaWwvUlLcbLkyxSc8ogNqzIDUk01nghB//Z"
+        }
+      ]
+    },
+    {
+      "id": "861mr6dwr",
+      "name": "Протокол за безпоасно зареждане на ЕПС (електрически превозни средства)",
+      "status": "definition",
+      "date_created": "1683139702418",
+      "date_updated": "1685376234256",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "861mpnt1a",
+      "name": "Поставяне на огледало на изхода от подземния паркинг",
+      "status": "definition",
+      "date_created": "1682236059173",
+      "date_updated": "1685376102817",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "861memq1v",
+      "name": "Провеждане на NPS анкета",
+      "status": "complete",
+      "date_created": "1677787350481",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "861me89p0",
+      "name": "Обсъждане на управление на месечната такса за озеленяване и снегопочистване с КМ",
+      "status": "complete",
+      "date_created": "1677605435900",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2vyac8m",
+      "name": "Уведомяване на ППМ за прекратяване на техните услуги",
+      "status": "complete",
+      "date_created": "1664557761996",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2vdax60",
+      "name": "Падащи стъкла от последните етажи",
+      "status": "to do",
+      "date_created": "1664211032767",
+      "date_updated": "1671693754453",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2v1whg8",
+      "name": "Използване на соларна енергия по субсидирана програма",
+      "status": "definition",
+      "date_created": "1663822256598",
+      "date_updated": "1684731978083",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2ttpken",
+      "name": "Събиране на въпроси по дневния ред",
+      "status": "complete",
+      "date_created": "1662912967114",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2ttnz7x",
+      "name": "Липса на процес за събиране на големи нерешени проблеми и оформяне на инициативи",
+      "status": "to do",
+      "date_created": "1662879849379",
+      "date_updated": "1682497936368",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2ttnz0r",
+      "name": "Високи енергийни разходи в спа центъра",
+      "status": "definition",
+      "date_created": "1662879259637",
+      "date_updated": "1693471596759",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2tm35fm",
+      "name": "Да се изискат партиди за ток, газ, вода",
+      "status": "complete",
+      "date_created": "1662722918664",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2tedqwb",
+      "name": "Процедура за \"Изравнителни Сметки\"",
+      "status": "complete",
+      "date_created": "1662652952056",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2tedqab",
+      "name": "Изясняване на въпроси за КМ (09.09.2022 г)",
+      "status": "complete",
+      "date_created": "1662652735973",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2tedpkq",
+      "name": "Банкова сметка за комплекс ВТ",
+      "status": "complete",
+      "date_created": "1662652517328",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2tednna",
+      "name": "Изясняване на дневен ред за общо събрание",
+      "status": "complete",
+      "date_created": "1662652298749",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2tedm69",
+      "name": "Правилник за Вътрешен Ред",
+      "status": "complete",
+      "date_created": "1662651776814",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2kbw2bh",
+      "name": "Списък с контакти на собственици",
+      "status": "complete",
+      "date_created": "1658238731094",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2k0dcyq",
+      "name": "Застраховка на машини и съоръжения в общи части",
+      "status": "to do",
+      "date_created": "1657807272866",
+      "date_updated": "1657807272866",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2gnx3gc",
+      "name": "Събиране на коментари от страна на контрольорите",
+      "status": "complete",
+      "date_created": "1656259727048",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2gnx3du",
+      "name": "Подготовка на финално предложение от страна на ВТ с работна група от юристи",
+      "status": "complete",
+      "date_created": "1656259488275",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "2gnx3ca",
+      "name": "Финализиране на оферта с променени параметри",
+      "status": "complete",
+      "date_created": "1656259330187",
+      "date_updated": "1730558665299",
+      "date_status_changed": null,
+      "listName": "Организация и инициативи",
+      "attachments": []
+    },
+    {
+      "id": "86bycr6u2",
+      "name": "Подобряване вида на зелените площи",
+      "status": "in progress",
+      "date_created": "1713341625155",
+      "date_updated": "1716872336373",
+      "date_status_changed": null,
+      "listName": "Регулярен контрол и поддръжка",
+      "attachments": [
+        {
+          "id": "9de11e0e-d19a-4cae-b58b-d934019eaa3e.jpg",
+          "fileName": "IMG_20240522_151107075_HDR.jpg",
+          "base64Image": "data:image/jpeg;base64,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"
+        },
+        {
+          "id": "e2fe6396-2b29-4341-bbea-627cf7e6f5ce.jpg",
+          "fileName": "IMG_20240415_084825982.jpg",
+          "base64Image": "data:image/jpeg;base64,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"
+        },
+        {
+          "id": "46701571-0b9e-4c65-b9ca-0a5dbbf3385d.jpg",
+          "fileName": "IMG_20240415_085234429.jpg",
+          "base64Image": "data:image/jpeg;base64,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"
+        }
+      ]
+    },
+    {
+      "id": "2y36an6",
+      "name": "Почистване на Facebook група от стари контакти",
+      "status": "to do",
+      "date_created": "1666770904505",
+      "date_updated": "1666770904505",
+      "date_status_changed": null,
+      "listName": "Регулярен контрол и поддръжка",
+      "attachments": []
+    }
+  ]
+}
