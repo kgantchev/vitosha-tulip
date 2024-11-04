@@ -2,60 +2,170 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import KanbanView from './KanbanView';
+import '@testing-library/jest-dom';
+import dayjs from 'dayjs';
 
-const mockKanbanData = {
-    "Test List": {
-        "to do": [{ id: "1", name: "Task 1", date_updated: "1671693754453", attachments: [] }],
+// Mock Data for Kanban Columns
+const mockKanbanColumns = {
+    "Project Alpha": {
+        "to do": [
+            {
+                id: '1',
+                name: 'Design the landing page',
+                date_updated: String(dayjs('2023-10-01').valueOf()),
+                attachments: [
+                    {
+                        base64Image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...',
+                        fileName: 'design.png',
+                    },
+                ],
+            },
+            {
+                id: '2',
+                name: 'Set up CI/CD pipeline',
+                date_updated: String(dayjs('2023-10-03').valueOf()),
+            },
+        ],
         "in progress": [
             {
-                id: "2",
-                name: "Task 2",
-                date_updated: "1671693754453",
-                attachments: [{ fileName: "image1.jpg", base64Image: "data:image/jpeg;base64,...base64data..." }]
-            }
+                id: '3',
+                name: 'Develop authentication module',
+                date_updated: String(dayjs('2023-10-05').valueOf()),
+                attachments: [
+                    {
+                        base64Image: 'data:image/png;base64,abcd1234...',
+                        fileName: 'auth_flow.png',
+                    },
+                ],
+            },
+        ],
+    },
+    "Project Beta": {
+        "to do": [],
+        "complete": [
+            {
+                id: '4',
+                name: 'Market research',
+                date_updated: String(dayjs('2023-09-20').valueOf()),
+            },
         ],
     },
 };
 
 describe('KanbanView Component', () => {
-    test('renders columns with tasks correctly', () => {
-        render(<KanbanView kanbanColumns={mockKanbanData} />);
+    test('renders without crashing when kanbanColumns is empty', () => {
+        render(<KanbanView kanbanColumns={{}} />);
 
-        // Check for column names
-        expect(screen.getByText(/TO DO/i)).toBeInTheDocument();
-        expect(screen.getByText(/IN PROGRESS/i)).toBeInTheDocument();
-
-        // Check for task names
-        expect(screen.getByText(/Task 1/i)).toBeInTheDocument();
-        expect(screen.getByText(/Task 2/i)).toBeInTheDocument();
+        // Since kanbanColumns is empty, no list names should be rendered
+        const listNameElements = screen.queryAllByRole('heading', { level: 4 });
+        expect(listNameElements.length).toBe(0);
     });
 
-    test('renders task details and attachment images if present', () => {
-        render(<KanbanView kanbanColumns={mockKanbanData} />);
+    test('renders list names correctly', () => {
+        render(<KanbanView kanbanColumns={mockKanbanColumns} />);
 
-        // Check task name and updated date
-        expect(screen.getByText(/Task 2/i)).toBeInTheDocument();
-        expect(screen.getByText(/Last updated: 2022-12-22/i)).toBeInTheDocument(); // Adjust date to match mock data
+        // Check for "Project Alpha" and "Project Beta" headings
+        const projectAlpha = screen.getByRole('heading', { name: 'Project Alpha' });
+        const projectBeta = screen.getByRole('heading', { name: 'Project Beta' });
 
-        // Check if the attachment image is displayed correctly
-        const image = screen.getByAltText(/image1.jpg/i);
-        expect(image).toHaveAttribute("src", "data:image/jpeg;base64,...base64data...");
+        expect(projectAlpha).toBeInTheDocument();
+        expect(projectBeta).toBeInTheDocument();
     });
 
-    test('renders empty columns if there are no tasks', () => {
-        const emptyKanbanData = {
-            "Empty List": {
-                "to do": [],
-                "in progress": [],
-                "complete": [],
-            },
-        };
+    test('renders columns in the specified order', () => {
+        render(<KanbanView kanbanColumns={mockKanbanColumns} />);
 
-        render(<KanbanView kanbanColumns={emptyKanbanData} />);
+        // The column order should be: TO DO, DEFINITION, IN PROGRESS, IN REVIEW, COMPLETE
+        const expectedOrder = ['TO DO', 'DEFINITION', 'IN PROGRESS', 'IN REVIEW', 'COMPLETE'];
 
-        // Check for empty column headers without tasks
-        expect(screen.getByText(/TO DO/i)).toBeInTheDocument();
-        expect(screen.getByText(/IN PROGRESS/i)).toBeInTheDocument();
-        expect(screen.getByText(/COMPLETE/i)).toBeInTheDocument();
+        // Iterate through each listName
+        Object.keys(mockKanbanColumns).forEach((listName) => {
+            const listSection = screen.getByRole('heading', { name: listName }).parentElement;
+            expectedOrder.forEach((columnName, index) => {
+                const columnHeading = screen.getAllByRole('heading', { name: columnName, level: 6 })[index];
+                expect(columnHeading).toBeInTheDocument();
+            });
+        });
+    });
+
+    test('renders tasks within the correct columns', () => {
+        render(<KanbanView kanbanColumns={mockKanbanColumns} />);
+
+        // Check for tasks in "Project Alpha" -> "TO DO"
+        const projectAlphaToDo = screen.getByRole('heading', { name: 'Project Alpha' }).parentElement;
+        expect(within(projectAlphaToDo).getByText('TO DO')).toBeInTheDocument();
+        expect(within(projectAlphaToDo).getByText('Design the landing page')).toBeInTheDocument();
+        expect(within(projectAlphaToDo).getByText('Set up CI/CD pipeline')).toBeInTheDocument();
+
+        // Check for tasks in "Project Alpha" -> "IN PROGRESS"
+        expect(within(projectAlphaToDo).getByText('IN PROGRESS')).toBeInTheDocument();
+        expect(within(projectAlphaToDo).getByText('Develop authentication module')).toBeInTheDocument();
+
+        // Check for tasks in "Project Beta" -> "COMPLETE"
+        const projectBetaComplete = screen.getByRole('heading', { name: 'Project Beta' }).parentElement;
+        expect(within(projectBetaComplete).getByText('COMPLETE')).toBeInTheDocument();
+        expect(within(projectBetaComplete).getByText('Market research')).toBeInTheDocument();
+    });
+
+    test('renders attachments when present', () => {
+        render(<KanbanView kanbanColumns={mockKanbanColumns} />);
+
+        // Task with attachment: "Design the landing page"
+        const designTaskImage = screen.getByAltText('design.png');
+        expect(designTaskImage).toBeInTheDocument();
+        expect(designTaskImage).toHaveAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...');
+
+        // Task with attachment: "Develop authentication module"
+        const authTaskImage = screen.getByAltText('auth_flow.png');
+        expect(authTaskImage).toBeInTheDocument();
+        expect(authTaskImage).toHaveAttribute('src', 'data:image/png;base64,abcd1234...');
+    });
+
+    test('does not render attachments when not present', () => {
+        render(<KanbanView kanbanColumns={mockKanbanColumns} />);
+
+        // Task without attachment: "Set up CI/CD pipeline"
+        const ciTaskImage = screen.queryByAltText('Set up CI/CD pipeline');
+        expect(ciTaskImage).not.toBeInTheDocument();
+
+        // Task without attachment: "Market research"
+        const marketTaskImage = screen.queryByAltText('Market research');
+        expect(marketTaskImage).not.toBeInTheDocument();
+    });
+
+    test('formats and displays the last updated date correctly', () => {
+        render(<KanbanView kanbanColumns={mockKanbanColumns} />);
+
+        // "Design the landing page" updated on 2023-10-01
+        const designTaskDate = screen.getByText('Last updated: 2023-10-01');
+        expect(designTaskDate).toBeInTheDocument();
+
+        // "Set up CI/CD pipeline" updated on 2023-10-03
+        const ciTaskDate = screen.getByText('Last updated: 2023-10-03');
+        expect(ciTaskDate).toBeInTheDocument();
+
+        // "Develop authentication module" updated on 2023-10-05
+        const authTaskDate = screen.getByText('Last updated: 2023-10-05');
+        expect(authTaskDate).toBeInTheDocument();
+
+        // "Market research" updated on 2023-09-20
+        const marketTaskDate = screen.getByText('Last updated: 2023-09-20');
+        expect(marketTaskDate).toBeInTheDocument();
+    });
+
+    test('handles multiple list names correctly', () => {
+        render(<KanbanView kanbanColumns={mockKanbanColumns} />);
+
+        // Ensure both "Project Alpha" and "Project Beta" sections are present
+        const projectAlpha = screen.getByRole('heading', { name: 'Project Alpha' });
+        const projectBeta = screen.getByRole('heading', { name: 'Project Beta' });
+
+        expect(projectAlpha).toBeInTheDocument();
+        expect(projectBeta).toBeInTheDocument();
+    });
+
+    test('matches the snapshot', () => {
+        const { asFragment } = render(<KanbanView kanbanColumns={mockKanbanColumns} />);
+        expect(asFragment()).toMatchSnapshot();
     });
 });

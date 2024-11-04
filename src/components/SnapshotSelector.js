@@ -5,7 +5,9 @@ import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 function SnapshotSelector({ snapshots, onChange, value }) {
     const handleChange = (event) => {
         const date = event.target.value;
-        onChange(date);
+        if (date !== value) {
+            onChange(date);
+        }
     };
 
     // Sort snapshots in descending order to show the latest first in the dropdown
@@ -16,12 +18,18 @@ function SnapshotSelector({ snapshots, onChange, value }) {
             <InputLabel id="snapshot-selector-label">Select Snapshot</InputLabel>
             <Select
                 labelId="snapshot-selector-label"
-                value={value}
+                value={value || ""}
                 label="Select Snapshot"
                 onChange={handleChange}
+                displayEmpty
             >
-                {sortedSnapshots.map((snapshot) => (
-                    <MenuItem key={snapshot.date} value={snapshot.date}>
+                {snapshots.length > 0 && value === "" && (
+                    <MenuItem key="placeholder" value="" disabled>
+                        Select Snapshot
+                    </MenuItem>
+                )}
+                {sortedSnapshots.map((snapshot, index) => (
+                    <MenuItem key={`${snapshot.date}-${index}`} value={snapshot.date}>
                         {snapshot.date}
                     </MenuItem>
                 ))}
