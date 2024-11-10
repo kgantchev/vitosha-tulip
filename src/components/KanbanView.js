@@ -32,11 +32,16 @@ const KanbanView = ({ kanbanColumns = {} }) => {
                                 <Box
                                     key={columnName}
                                     sx={{
-                                        flex: '1 1 200px', // Grow and shrink as needed, with a base width of 200px
+                                        flex: '1 1 200px',
                                         minWidth: '200px',
                                     }}
                                 >
-                                    <Typography variant="h6" gutterBottom>
+                                    <Typography
+                                        variant="h6"
+                                        gutterBottom
+                                        component="h6"
+                                        data-testid="column-heading"
+                                    >
                                         {columnName.toUpperCase()}
                                     </Typography>
                                     {tasks.map((task) => (

@@ -2,63 +2,64 @@
 name: Monthly Snapshot and Deploy
 
 on:
-  schedule:
-    - cron: '0 21 28-31 * *'  # At 21:00 UTC on days 28-31
+    workflow_dispatch:
+    schedule:
+        - cron: '0 21 28-31 * *' # At 21:00 UTC on days 28-31
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+    build-and-deploy:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v3
 
-      - name: Check if Today is the Last Day of the Month in EET
-        id: check_last_day
-        shell: bash
-        run: |
-          # Get current date in EET (Eastern European Time)
-          CURRENT_DATE=$(TZ="Europe/Sofia" date '+%Y-%m-%d')
-          TOMORROW_DATE=$(TZ="Europe/Sofia" date -d "$CURRENT_DATE + 1 day" '+%Y-%m-%d')
-          CURRENT_MONTH=$(TZ="Europe/Sofia" date '+%m')
-          TOMORROW_MONTH=$(TZ="Europe/Sofia" date -d "$TOMORROW_DATE" '+%m')
+            - name: Check if Today is the Last Day of the Month in EET
+              id: check_last_day
+              shell: bash
+              run: |
+                  # Get current date in EET (Eastern European Time)
+                  CURRENT_DATE=$(TZ="Europe/Sofia" date '+%Y-%m-%d')
+                  TOMORROW_DATE=$(TZ="Europe/Sofia" date -d "$CURRENT_DATE + 1 day" '+%Y-%m-%d')
+                  CURRENT_MONTH=$(TZ="Europe/Sofia" date '+%m')
+                  TOMORROW_MONTH=$(TZ="Europe/Sofia" date -d "$TOMORROW_DATE" '+%m')
 
-          if [ "$CURRENT_MONTH" != "$TOMORROW_MONTH" ]; then
-            echo "It's the last day of the month in EET."
-            echo "is_last_day=true" >> $GITHUB_OUTPUT
-          else
-            echo "Not the last day of the month in EET."
-            echo "is_last_day=false" >> $GITHUB_OUTPUT
-          fi
+                  if [ "$CURRENT_MONTH" != "$TOMORROW_MONTH" ]; then
+                    echo "It's the last day of the month in EET."
+                    echo "is_last_day=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "Not the last day of the month in EET."
+                    echo "is_last_day=false" >> $GITHUB_OUTPUT
+                  fi
 
-      - name: Stop if Not the Last Day
-        if: steps.check_last_day.outputs.is_last_day != 'true'
-        run: exit 0
+            - name: Stop if Not the Last Day
+              if: ${{ github.event_name == 'schedule' && steps.check_last_day.outputs.is_last_day != 'true' }}
+              run: exit 0
 
-      - name: Setup Node.js Environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-          cache: 'yarn'
+            - name: Setup Node.js Environment
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '14'
+                  cache: 'yarn'
 
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+            - name: Install Dependencies
+              run: yarn install --frozen-lockfile
 
-      - name: Run Snapshot Script
-        env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          CLICKUP_SPACE_ID: ${{ secrets.CLICKUP_SPACE_ID }}
-        run: yarn snapshot
+            - name: Run Snapshot Script
+              env:
+                  PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+                  CLICKUP_SPACE_ID: ${{ secrets.CLICKUP_SPACE_ID }}
+              run: yarn snapshot
 
-      - name: Build the Website
-        run: yarn build
+            - name: Build the Website
+              run: yarn build
 
-      - name: Install Surge CLI
-        run: npm install -g surge
+            - name: Install Surge CLI
+              run: npm install -g surge
 
-      - name: Deploy to Surge Production
-        env:
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-        run: |
-          echo "Deploying to production domain vitosha-tulip.surge.sh"
-          surge --project ./build --domain vitosha-tulip.surge.sh --token "$SURGE_TOKEN"
+            - name: Deploy to Surge Production
+              env:
+                  SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+              run: |
+                  echo "Deploying to production domain vitosha-tulip.surge.sh"
+                  surge --project ./build --domain vitosha-tulip.surge.sh --token "$SURGE_TOKEN"
