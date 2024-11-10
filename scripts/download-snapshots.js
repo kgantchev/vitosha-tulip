@@ -1,4 +1,5 @@
 // scripts/download-snapshots.js
+
 const fs = require('fs');
 const path = require('path');
 const dayjs = require('dayjs');
@@ -190,28 +191,6 @@ async function fetchTasksForList(listId, listName, statuses) {
     }
 }
 
-// Function to generate the snapshot index as an array
-function generateSnapshotIndex() {
-    const snapshotFiles = fs.readdirSync(SNAPSHOTS_DIR).filter(file => file.endsWith('.json'));
-
-    let importStatements = '';
-    let exportArray = 'const snapshots = [\n';
-
-    snapshotFiles.forEach(file => {
-        const date = file.slice(0, -5); // Remove '.json'
-        const variableName = `snapshot${date.replace('-', '')}`;
-        importStatements += `import ${variableName} from './${file}';\n`;
-        exportArray += `  { date: '${date}', data: ${variableName} },\n`;
-    });
-
-    exportArray += '];\n\nexport default snapshots;\n';
-
-    const indexPath = path.join(SNAPSHOTS_DIR, 'index.js');
-    const indexContent = `${importStatements}\n${exportArray}`;
-    fs.writeFileSync(indexPath, indexContent);
-    console.log(`Snapshot index updated at ${indexPath}`);
-}
-
 // Main function to download all snapshots
 async function downloadSnapshot() {
     const lists = await fetchLists();
@@ -272,9 +251,20 @@ async function downloadSnapshot() {
 
     fs.writeFileSync(snapshotPath, JSON.stringify(snapshotData, null, 2));
     console.log(`Snapshot saved to ${snapshotPath}`);
-
-    // Update the snapshot index
-    generateSnapshotIndex();
 }
 
-downloadSnapshot();
+// Exported functions for testing
+module.exports = {
+    fetchLists,
+    fetchListDetails,
+    fetchTaskDetails,
+    processAttachment,
+    sanitizeTask,
+    fetchTasksForList,
+    downloadSnapshot, // You can export this if you want to test the main function
+};
+
+// Execute the main function if the script is run directly
+if (require.main === module) {
+    downloadSnapshot();
+}

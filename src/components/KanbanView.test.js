@@ -1,6 +1,6 @@
 // src/components/KanbanView.test.js
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import KanbanView from './KanbanView';
 import '@testing-library/jest-dom';
 import dayjs from 'dayjs';
@@ -75,16 +75,22 @@ describe('KanbanView Component', () => {
     test('renders columns in the specified order', () => {
         render(<KanbanView kanbanColumns={mockKanbanColumns} />);
 
-        // The column order should be: TO DO, DEFINITION, IN PROGRESS, IN REVIEW, COMPLETE
         const expectedOrder = ['TO DO', 'DEFINITION', 'IN PROGRESS', 'IN REVIEW', 'COMPLETE'];
 
-        // Iterate through each listName
         Object.keys(mockKanbanColumns).forEach((listName) => {
-            const listSection = screen.getByRole('heading', { name: listName }).parentElement;
-            expectedOrder.forEach((columnName, index) => {
-                const columnHeading = screen.getAllByRole('heading', { name: columnName, level: 6 })[index];
+            const listHeading = screen.getByRole('heading', { name: listName });
+            const listSection = listHeading.parentElement;
+            const listWithin = within(listSection);
+
+            const renderedColumnNames = [];
+
+            expectedOrder.forEach((columnName) => {
+                const columnHeading = listWithin.getByText(columnName, { selector: 'h6' });
                 expect(columnHeading).toBeInTheDocument();
+                renderedColumnNames.push(columnHeading.textContent.trim());
             });
+
+            expect(renderedColumnNames).toEqual(expectedOrder);
         });
     });
 
@@ -92,19 +98,23 @@ describe('KanbanView Component', () => {
         render(<KanbanView kanbanColumns={mockKanbanColumns} />);
 
         // Check for tasks in "Project Alpha" -> "TO DO"
-        const projectAlphaToDo = screen.getByRole('heading', { name: 'Project Alpha' }).parentElement;
-        expect(within(projectAlphaToDo).getByText('TO DO')).toBeInTheDocument();
-        expect(within(projectAlphaToDo).getByText('Design the landing page')).toBeInTheDocument();
-        expect(within(projectAlphaToDo).getByText('Set up CI/CD pipeline')).toBeInTheDocument();
+        const projectAlphaSection = screen.getByRole('heading', { name: 'Project Alpha' }).parentElement;
+        const alphaWithin = within(projectAlphaSection);
+
+        expect(alphaWithin.getByText('TO DO')).toBeInTheDocument();
+        expect(alphaWithin.getByText('Design the landing page')).toBeInTheDocument();
+        expect(alphaWithin.getByText('Set up CI/CD pipeline')).toBeInTheDocument();
 
         // Check for tasks in "Project Alpha" -> "IN PROGRESS"
-        expect(within(projectAlphaToDo).getByText('IN PROGRESS')).toBeInTheDocument();
-        expect(within(projectAlphaToDo).getByText('Develop authentication module')).toBeInTheDocument();
+        expect(alphaWithin.getByText('IN PROGRESS')).toBeInTheDocument();
+        expect(alphaWithin.getByText('Develop authentication module')).toBeInTheDocument();
 
         // Check for tasks in "Project Beta" -> "COMPLETE"
-        const projectBetaComplete = screen.getByRole('heading', { name: 'Project Beta' }).parentElement;
-        expect(within(projectBetaComplete).getByText('COMPLETE')).toBeInTheDocument();
-        expect(within(projectBetaComplete).getByText('Market research')).toBeInTheDocument();
+        const projectBetaSection = screen.getByRole('heading', { name: 'Project Beta' }).parentElement;
+        const betaWithin = within(projectBetaSection);
+
+        expect(betaWithin.getByText('COMPLETE')).toBeInTheDocument();
+        expect(betaWithin.getByText('Market research')).toBeInTheDocument();
     });
 
     test('renders attachments when present', () => {
