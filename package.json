@@ -36,7 +36,6 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "test:scripts": "jest tests --testEnvironment=node",
-        "test:all": "npm-run-all --parallel test test:scripts",
         "eject": "react-scripts eject"
     },
     "eslintConfig": {

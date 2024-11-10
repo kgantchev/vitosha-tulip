@@ -26,14 +26,7 @@ jobs:
               run: yarn install --frozen-lockfile
 
             - name: Run React Component Tests
-              run: yarn test -- --ci --watchAll=false
+              run: yarn test --ci --watchAll=false
 
             - name: Run Node.js Script Tests
               run: yarn test:scripts
-
-            # Optionally, you can upload test coverage reports or other artifacts
-            - name: Upload Coverage Report
-              uses: actions/upload-artifact@v3
-              with:
-                  name: coverage-report
-                  path: coverage/
