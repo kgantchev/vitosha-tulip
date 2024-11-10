@@ -63,3 +63,8 @@ jobs:
               run: |
                   echo "Deploying to production domain vitosha-tulip.surge.sh"
                   surge --project ./build --domain vitosha-tulip.surge.sh --token "$SURGE_TOKEN"
+
+            - name: Verify Deployment
+              run: |
+                  echo "Verifying that vitosha-tulip.surge.sh is live..."
+                  curl -s -o /dev/null -w "%{http_code}" https://vitosha-tulip.surge.sh | grep 200
