@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KanbanView Component matches the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-0"
+  >
+    <div
+      class="MuiBox-root css-1yjvs5a"
+    >
+      <h4
+        class="MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-1it4a80-MuiTypography-root"
+      >
+        Project Alpha
+      </h4>
+      <div
+        class="MuiBox-root css-1dqpc7h"
+      >
+        <div
+          class="MuiBox-root css-1wz9wm8"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-1wmifpn-MuiTypography-root"
+            data-testid="column-heading"
+          >
+            TO DO
+          </h6>
+          <div
+            class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1ypifsw-MuiPaper-root-MuiCard-root"
+            style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+          >
+            <div
+              class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle1 css-or3kzz-MuiTypography-root"
+              >
+                Design the landing page
+              </h6>
+              <img
+                alt="design.png"
+                class="MuiCardMedia-root MuiCardMedia-media MuiCardMedia-img css-1h81d90-MuiCardMedia-root"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+              />
+              <span
+                class="MuiTypography-root MuiTypography-caption css-1jkzbat-MuiTypography-root"
+              >
+                Last updated: 2023-10-01
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1ypifsw-MuiPaper-root-MuiCard-root"
+            style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+          >
+            <div
+              class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle1 css-or3kzz-MuiTypography-root"
+              >
+                Set up CI/CD pipeline
+              </h6>
+              <span
+                class="MuiTypography-root MuiTypography-caption css-1jkzbat-MuiTypography-root"
+              >
+                Last updated: 2023-10-03
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-1wz9wm8"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-1wmifpn-MuiTypography-root"
+            data-testid="column-heading"
+          >
+            DEFINITION
+          </h6>
+        </div>
+        <div
+          class="MuiBox-root css-1wz9wm8"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-1wmifpn-MuiTypography-root"
+            data-testid="column-heading"
+          >
+            IN PROGRESS
+          </h6>
+          <div
+            class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1ypifsw-MuiPaper-root-MuiCard-root"
+            style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+          >
+            <div
+              class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle1 css-or3kzz-MuiTypography-root"
+              >
+                Develop authentication module
+              </h6>
+              <img
+                alt="auth_flow.png"
+                class="MuiCardMedia-root MuiCardMedia-media MuiCardMedia-img css-1h81d90-MuiCardMedia-root"
+                src="data:image/png;base64,abcd1234..."
+              />
+              <span
+                class="MuiTypography-root MuiTypography-caption css-1jkzbat-MuiTypography-root"
+              >
+                Last updated: 2023-10-05
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-1wz9wm8"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-1wmifpn-MuiTypography-root"
+            data-testid="column-heading"
+          >
+            IN REVIEW
+          </h6>
+        </div>
+        <div
+          class="MuiBox-root css-1wz9wm8"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-1wmifpn-MuiTypography-root"
+            data-testid="column-heading"
+          >
+            COMPLETE
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-1yjvs5a"
+    >
+      <h4
+        class="MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-1it4a80-MuiTypography-root"
+      >
+        Project Beta
+      </h4>
+      <div
+        class="MuiBox-root css-1dqpc7h"
+      >
+        <div
+          class="MuiBox-root css-1wz9wm8"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-1wmifpn-MuiTypography-root"
+            data-testid="column-heading"
+          >
+            TO DO
+          </h6>
+        </div>
+        <div
+          class="MuiBox-root css-1wz9wm8"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-1wmifpn-MuiTypography-root"
+            data-testid="column-heading"
+          >
+            DEFINITION
+          </h6>
+        </div>
+        <div
+          class="MuiBox-root css-1wz9wm8"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-1wmifpn-MuiTypography-root"
+            data-testid="column-heading"
+          >
+            IN PROGRESS
+          </h6>
+        </div>
+        <div
+          class="MuiBox-root css-1wz9wm8"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-1wmifpn-MuiTypography-root"
+            data-testid="column-heading"
+          >
+            IN REVIEW
+          </h6>
+        </div>
+        <div
+          class="MuiBox-root css-1wz9wm8"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-1wmifpn-MuiTypography-root"
+            data-testid="column-heading"
+          >
+            COMPLETE
+          </h6>
+          <div
+            class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1ypifsw-MuiPaper-root-MuiCard-root"
+            style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+          >
+            <div
+              class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle1 css-or3kzz-MuiTypography-root"
+              >
+                Market research
+              </h6>
+              <span
+                class="MuiTypography-root MuiTypography-caption css-1jkzbat-MuiTypography-root"
+              >
+                Last updated: 2023-09-20
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
