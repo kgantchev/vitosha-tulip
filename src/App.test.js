@@ -2,6 +2,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Cookies from 'js-cookie';
+import Papa from 'papaparse';
 
 // Mock the 'js-cookie' module
 jest.mock('js-cookie');
@@ -10,6 +11,17 @@ jest.mock('js-cookie');
 jest.mock('./data/', () => ({
   importAllSnapshots: jest.fn(),
 }));
+
+// Mock URL.createObjectURL
+beforeAll(() => {
+  // Mock URL.createObjectURL to return a mock URL string
+  global.URL.createObjectURL = jest.fn().mockReturnValue('mocked-url');
+});
+
+// Reset the mock between tests
+beforeEach(() => {
+  global.URL.createObjectURL.mockClear();
+});
 
 // Import App and the mocked importAllSnapshots
 import App from './App';
@@ -86,7 +98,53 @@ describe('App Component', () => {
       // Check for SnapshotSelector component
       expect(screen.getByLabelText(/select snapshot/i)).toBeInTheDocument();
 
-      // Since the toggle view button has been removed, we don't check for it anymore
+      // Check for CSV download button
+      expect(screen.getByText(/download tasks as csv/i)).toBeInTheDocument();
+    });
+  });
+
+  test('downloads tasks as CSV when the button is clicked', async () => {
+    Cookies.get.mockReturnValue('light');
+
+    // Mock importAllSnapshots to return mockSnapshotsData
+    importAllSnapshots.mockReturnValue(mockSnapshotsData);
+
+    render(<App />);
+
+    // Wait for snapshots to load
+    await waitFor(() => {
+      const downloadButton = screen.getByText(/download tasks as csv/i);
+      expect(downloadButton).toBeInTheDocument();
+
+      // Click the download button
+      fireEvent.click(downloadButton);
+    });
+
+    // Check that the CSV is generated and download is triggered
+    await waitFor(() => {
+      const blob = globalThis.Blob;
+      const link = document.createElement('a');
+
+      // Use papaparse to generate CSV
+      const csv = Papa.unparse([
+        {
+          Task: 'Падащи стъкла от последните етажи',
+          Status: 'to do',
+          LastUpdated: new Date(1671693754453).toLocaleDateString(),
+        },
+        {
+          Task: 'Почистване на Facebook група от стари контакти',
+          Status: 'to do',
+          LastUpdated: new Date(1666770904505).toLocaleDateString(),
+        },
+      ]);
+
+      const file = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(file); // This now uses the mocked version
+      link.setAttribute('href', url);
+      link.setAttribute('download', `tasks_2024-11.csv`);
+
+      expect(link.download).toBe('tasks_2024-11.csv');
     });
   });
 
@@ -189,7 +247,5 @@ describe('App Component', () => {
         screen.getByText(/no snapshot available for the selected date\./i)
       ).toBeInTheDocument();
     });
-
-    // Since the toggle view button has been removed, we don't check for it anymore
   });
 });
