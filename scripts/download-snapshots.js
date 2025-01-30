@@ -83,7 +83,6 @@ async function processAttachment(attachment) {
 
         image = image.resize(300, 300, { fit: 'inside' });
 
-        // Determine the output format and set quality accordingly
         if (imageFormat === 'png') {
             image = image.png({ quality: 900, compressionLevel: 9 });
         } else if (imageFormat === 'webp') {

@@ -1,5 +1,4 @@
 // scripts/tests/download-snapshots.test.js
-
 const fs = require('fs');
 const path = require('path');
 const dayjs = require('dayjs');
@@ -23,6 +22,9 @@ const {
 jest.mock('node-fetch');
 jest.mock('sharp');
 jest.mock('fs');
+jest.mock('mime-types', () => ({
+    lookup: jest.fn(),
+}));
 
 describe('download-snapshots.js', () => {
     beforeEach(() => {
@@ -31,10 +33,7 @@ describe('download-snapshots.js', () => {
 
     describe('fetchLists', () => {
         it('should fetch lists from the ClickUp API', async () => {
-            const mockResponse = {
-                lists: [{ id: '1', name: 'List 1' }],
-            };
-
+            const mockResponse = { lists: [{ id: '1', name: 'List 1' }] };
             fetch.mockResolvedValue({
                 json: jest.fn().mockResolvedValue(mockResponse),
             });
@@ -43,9 +42,7 @@ describe('download-snapshots.js', () => {
 
             expect(fetch).toHaveBeenCalledWith(
                 expect.stringContaining('/space/'),
-                expect.objectContaining({
-                    headers: expect.any(Object),
-                })
+                expect.objectContaining({ headers: expect.any(Object) })
             );
             expect(lists).toEqual(mockResponse.lists);
         });
@@ -62,7 +59,6 @@ describe('download-snapshots.js', () => {
     describe('fetchListDetails', () => {
         it('should fetch list details from the ClickUp API', async () => {
             const mockListDetails = { id: '1', statuses: [] };
-
             fetch.mockResolvedValue({
                 json: jest.fn().mockResolvedValue(mockListDetails),
             });
@@ -71,9 +67,7 @@ describe('download-snapshots.js', () => {
 
             expect(fetch).toHaveBeenCalledWith(
                 expect.stringContaining('/list/1'),
-                expect.objectContaining({
-                    headers: expect.any(Object),
-                })
+                expect.objectContaining({ headers: expect.any(Object) })
             );
             expect(listDetails).toEqual(mockListDetails);
         });
@@ -90,7 +84,6 @@ describe('download-snapshots.js', () => {
     describe('fetchTaskDetails', () => {
         it('should fetch task details from the ClickUp API', async () => {
             const mockTaskDetails = { id: '1', attachments: [] };
-
             fetch.mockResolvedValue({
                 json: jest.fn().mockResolvedValue(mockTaskDetails),
             });
@@ -99,9 +92,7 @@ describe('download-snapshots.js', () => {
 
             expect(fetch).toHaveBeenCalledWith(
                 expect.stringContaining('/task/1'),
-                expect.objectContaining({
-                    headers: expect.any(Object),
-                })
+                expect.objectContaining({ headers: expect.any(Object) })
             );
             expect(taskDetails).toEqual(mockTaskDetails);
         });
@@ -117,25 +108,32 @@ describe('download-snapshots.js', () => {
 
     describe('processAttachment', () => {
         it('should process an attachment and return a base64 string', async () => {
-            const mockAttachment = { id: '1', url: 'http://example.com/image.jpg' };
-            const mockImageBuffer = Buffer.from('image data');
+            const mockAttachment = { id: '1', url: 'http://example.com/image.jpg', title: 'image.jpg' };
+            const mockImageBuffer = Buffer.from('image data');  // Simulating image data from fetch
+            const processedBuffer = Buffer.from('processed image data');  // Simulated processed image buffer
 
-            // Mock fetching the image
+            // Mock the fetch call to simulate downloading the image
             fetch.mockResolvedValue({
-                buffer: jest.fn().mockResolvedValue(mockImageBuffer),
+                ok: true,
+                buffer: jest.fn().mockResolvedValue(mockImageBuffer),  // Return the mock image buffer
             });
 
             // Mock sharp processing
-            sharp.mockReturnValue({
+            sharp.mockReturnValueOnce({
                 resize: jest.fn().mockReturnThis(),
                 jpeg: jest.fn().mockReturnThis(),
-                toBuffer: jest.fn().mockResolvedValue(Buffer.from('thumbnail data')),
+                toBuffer: jest.fn().mockResolvedValue(processedBuffer),  // Return processed buffer
             });
 
             const base64String = await processAttachment(mockAttachment);
 
+            // Verify that the fetch call happened with the correct URL
             expect(fetch).toHaveBeenCalledWith(mockAttachment.url, expect.any(Object));
+
+            // Verify that sharp was called with the correct image buffer
             expect(sharp).toHaveBeenCalledWith(mockImageBuffer);
+
+            // Verify that the result is a base64-encoded string
             expect(base64String).toMatch(/^data:image\/jpeg;base64,/);
         });
 
@@ -150,6 +148,43 @@ describe('download-snapshots.js', () => {
         });
     });
 
+    describe('fetchTasksForList', () => {
+
+        it('should return empty kanban columns when no tasks are found', async () => {
+            fetch.mockResolvedValueOnce({
+                json: jest.fn().mockResolvedValue({ tasks: [] }),
+            });
+
+            const { kanbanColumns, tasks } = await fetchTasksForList('1', 'List 1', []);
+
+            expect(kanbanColumns).toEqual({});
+            expect(tasks).toEqual([]);
+        });
+    });
+
+    describe('downloadSnapshot', () => {
+        it('should generate and save a snapshot', async () => {
+            const mockLists = [
+                { id: '1', name: 'List 1' },
+                { id: '2', name: 'List 2' },
+            ];
+
+            fetch.mockResolvedValueOnce({
+                json: jest.fn().mockResolvedValue({ lists: mockLists }),
+            });
+
+            fs.writeFileSync = jest.fn();  // Mock file writing
+
+            await downloadSnapshot();
+
+            expect(fs.writeFileSync).toHaveBeenCalled();
+            expect(fs.writeFileSync).toHaveBeenCalledWith(
+                expect.stringContaining('.json'),
+                expect.any(String)
+            );
+        });
+    });
+
     describe('sanitizeTask', () => {
         it('should sanitize task data', () => {
             const task = {
@@ -160,6 +195,7 @@ describe('download-snapshots.js', () => {
                 date_updated: '1234567890',
                 date_status_changed: null,
                 attachments: [],
+                email: 'unsanitized@email.com'
             };
 
             const sanitized = sanitizeTask(task, 'List 1');
@@ -176,6 +212,4 @@ describe('download-snapshots.js', () => {
             });
         });
     });
-
-    // Additional tests for fetchTasksForList and downloadSnapshot can be added similarly
 });
