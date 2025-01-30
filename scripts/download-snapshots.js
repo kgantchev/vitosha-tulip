@@ -68,22 +68,37 @@ async function fetchTaskDetails(taskId) {
 async function processAttachment(attachment) {
     try {
         const attachmentUrl = attachment.url;
+        const originalMimeType = mime.lookup(attachment.title) || 'image/jpeg';
+        const imageFormat = originalMimeType.split('/')[1] || 'jpeg';
 
         // Fetch the image as a buffer
         const response = await fetch(attachmentUrl, { headers });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch image: ${response.statusText}`);
+        }
         const buffer = await response.buffer();
 
-        // Use sharp to create a thumbnail
-        const thumbnailBuffer = await sharp(buffer)
-            .resize(100, 100, { fit: 'inside' }) // Adjust size as needed
-            .jpeg({ quality: 60 }) // Adjust quality as needed
-            .toBuffer();
+        // Use sharp to process the image
+        let image = sharp(buffer);
 
-        // Convert the thumbnail to a Base64 string
-        const base64String = thumbnailBuffer.toString('base64');
+        image = image.resize(300, 300, { fit: 'inside' });
+
+        // Determine the output format and set quality accordingly
+        if (imageFormat === 'png') {
+            image = image.png({ quality: 900, compressionLevel: 9 });
+        } else if (imageFormat === 'webp') {
+            image = image.webp({ quality: 90 });
+        } else {
+            image = image.jpeg({ quality: 90 });
+        }
+
+        const processedBuffer = await image.toBuffer();
+
+        // Convert the processed image to a Base64 string
+        const base64String = processedBuffer.toString('base64');
 
         // Return the Base64 string with appropriate data URI prefix
-        return `data:image/jpeg;base64,${base64String}`;
+        return `data:${originalMimeType};base64,${base64String}`;
     } catch (error) {
         console.error(`Error processing attachment ${attachment.id}:`, error.message);
         return null;
@@ -99,8 +114,8 @@ function sanitizeTask(task, listName) {
         date_created: task.date_created,
         date_updated: task.date_updated,
         date_status_changed: task.date_status_changed || null,
-        listName, // Add list name as a badge
-        attachments: task.attachments || [], // Include attachments info
+        listName,
+        attachments: task.attachments || [],
     };
 }
 
@@ -261,7 +276,7 @@ module.exports = {
     processAttachment,
     sanitizeTask,
     fetchTasksForList,
-    downloadSnapshot, // You can export this if you want to test the main function
+    downloadSnapshot,
 };
 
 // Execute the main function if the script is run directly
