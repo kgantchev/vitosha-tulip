@@ -1,14 +1,13 @@
-// src/App.js
 import React, { useState, useEffect, useMemo } from 'react';
-import { ThemeProvider, CssBaseline, Container, Typography } from '@mui/material';
+import { ThemeProvider, CssBaseline, Container, Typography, Button } from '@mui/material';
 import { lightTheme, darkTheme } from './components/ThemeSelector';
 import ThemeSelector from './components/ThemeSelector';
 import KanbanView from './components/KanbanView';
 import SnapshotSelector from './components/SnapshotSelector';
 import Cookies from 'js-cookie';
 import { importAllSnapshots } from './data/';
+import Papa from 'papaparse';
 
-// Exported utility functions for easier testing
 export const saveThemeToCookies = (themeMode) => {
   Cookies.set('theme', themeMode, { expires: 365 });
 };
@@ -17,7 +16,33 @@ export const getInitialTheme = () => {
   return Cookies.get('theme') || 'light';
 };
 
-// Function to check if the snapshot is empty
+const downloadCSV = (snapshot, date) => {
+  if (!snapshot || isSnapshotEmpty(snapshot)) {
+    alert('No data to download');
+    return;
+  }
+
+  // Flatten the tasks data into a format suitable for CSV
+  const tasks = Object.values(snapshot.kanbanColumns).flatMap((column) =>
+    Object.values(column).flat()
+  );
+
+  const tasksForCSV = tasks.map((task) => ({
+    Task: task.name,
+    Status: task.status,
+    LastUpdated: new Date(Number(task.date_updated)).toLocaleDateString(),
+  }));
+
+  // Convert to CSV using PapaParse and trigger download
+  const csv = Papa.unparse(tasksForCSV);
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', `tasks_${date}.csv`);
+  link.click();
+};
+
 function isSnapshotEmpty(snapshot) {
   const hasKanbanData =
     snapshot.kanbanColumns && Object.keys(snapshot.kanbanColumns).length > 0;
@@ -25,28 +50,19 @@ function isSnapshotEmpty(snapshot) {
 }
 
 function App() {
-  // Theme state
   const initialThemeMode = getInitialTheme();
   const [themeMode, setThemeMode] = useState(initialThemeMode);
-
-  // Snapshot state
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedSnapshot, setSelectedSnapshot] = useState(null);
-
-  // Load snapshots dynamically
   const snapshots = useMemo(() => importAllSnapshots(), []);
-
-  // Sort snapshots by date descending
   const sortedSnapshots = useMemo(() => {
     return [...snapshots].sort((a, b) => b.date.localeCompare(a.date));
   }, [snapshots]);
 
-  // Save theme to cookies whenever it changes
   useEffect(() => {
     saveThemeToCookies(themeMode);
   }, [themeMode]);
 
-  // Set the default snapshot to the latest one on component mount
   useEffect(() => {
     if (sortedSnapshots.length > 0) {
       const latestSnapshot = sortedSnapshots[0];
@@ -55,7 +71,6 @@ function App() {
     }
   }, [sortedSnapshots]);
 
-  // Handle snapshot selection change
   const handleSnapshotChange = (date) => {
     const snapshot = sortedSnapshots.find((s) => s.date === date);
     if (snapshot) {
@@ -71,17 +86,22 @@ function App() {
     <ThemeProvider theme={themeMode === 'light' ? lightTheme : darkTheme}>
       <CssBaseline />
       <Container maxWidth="lg" role="main">
-        {/* Theme Selector Component */}
         <ThemeSelector themeMode={themeMode} setThemeMode={setThemeMode} />
-
-        {/* Snapshot Selector Component */}
         <SnapshotSelector
           snapshots={sortedSnapshots}
           onChange={handleSnapshotChange}
           value={selectedDate}
         />
 
-        {/* Display Selected Snapshot */}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => downloadCSV(selectedSnapshot, selectedDate)}
+          sx={{ mt: 3 }}
+        >
+          Download Tasks as CSV
+        </Button>
+
         {selectedSnapshot && !isSnapshotEmpty(selectedSnapshot) ? (
           <KanbanView kanbanColumns={selectedSnapshot.kanbanColumns} />
         ) : (
