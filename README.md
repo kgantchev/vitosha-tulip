@@ -8,7 +8,7 @@ Vitosha Tulip is a web application that visualizes tasks from ClickUp in both Ka
 * Snapshot Selector: Select tasks snapshots by month and year.
 * Responsive Design: Fully responsive UI using Material-UI (MUI).
 * Automated Snapshots: Monthly snapshots of tasks using GitHub Actions.
-* Deployment: Automatically deployed to vitosha-tulip.surge.sh.
+* Deployment: Automatically deployed to [vitosha-tulip.surge.sh](https://vitosha-tulip.surge.sh/)
 
 ## Public Website
 
@@ -88,7 +88,7 @@ The project includes a GitHub Actions workflow that automates the following task
 * Actions:
 	+ Executes the yarn snapshot script to download the latest tasks from ClickUp.
 	+ Builds the application using yarn build.
-	+ Deploys the application to vitosha-tulip.surge.sh.
+	+ Deploys the application to [vitosha-tulip.surge.sh](https://vitosha-tulip.surge.sh/)
 
 **Setting Up GitHub Actions Secrets**:
 
