@@ -5,7 +5,7 @@ Vitosha Tulip is a web application that visualizes tasks from ClickUp in both Ka
 ## Features
 
 * Kanban and List Views: Toggle between Kanban and List views to display tasks.
-* Snapshot Selector: Select tasks snapshots by month and year.
+* Snapshot Selector: Select task snapshots by month and year.
 * Responsive Design: Fully responsive UI using Material-UI (MUI).
 * Automated Snapshots: Monthly snapshots of tasks using GitHub Actions.
 * Deployment: Automatically deployed to [vitosha-tulip.surge.sh](https://vitosha-tulip.surge.sh/)
@@ -37,7 +37,7 @@ cd vitosha-tulip
 
 Setting Up Environment Variables
 
-Create a `.env` file in the root directory and add the following environment variables:
+Create an `.env` file in the root directory and add the following environment variables:
 
 ### .env
 
