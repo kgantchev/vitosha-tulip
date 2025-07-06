@@ -39,8 +39,9 @@ jobs:
                   fi
 
             - name: Warn if Not Last Day for Workflow Dispatch
-              if: ${{ github.event_name == 'workflow_dispatch' && steps.check_last_day.outputs.is_last_day != 'true' }}
-              run: echo "WARNING: Running snapshot on a non-last day of the month ($CURRENT_DATE). Ensure this is intentional."
+              if: ${{ github.event_name == 'workflow_dispatch' && steps.check_last_day.outputs.is_last_day != 'true' && inputs.restrict-last-day != 'true' }}
+              run: |
+                  echo "WARNING: Running snapshot on a non-last day of the month ($(TZ="Europe/Sofia" date '+%Y-%m-%d')). Ensure this is intentional."
 
             - name: Setup Node.js Environment
               uses: actions/setup-node@v3
