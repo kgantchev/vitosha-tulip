@@ -3,10 +3,11 @@ name: Monthly Snapshot and Deploy
 on:
     workflow_dispatch:
     schedule:
-        - cron: '0 21 28-31 * *'
+        - cron: '0 21 28-31 * *' # At 21:00 UTC on days 28-31
 
 permissions:
-    contents: write
+    contents: write # Grant write permissions for pushing commits and creating branches
+    pull-requests: write # Grant permissions for creating and managing pull requests
 
 jobs:
     build-and-deploy:
@@ -53,13 +54,30 @@ jobs:
                   CLICKUP_SPACE_ID: ${{ secrets.CLICKUP_SPACE_ID }}
               run: yarn snapshot
 
-            - name: Commit Snapshot
+            - name: Create and Push Snapshot Branch
+              id: commit_snapshot
               run: |
                   git config user.name "GitHub Actions Bot"
                   git config user.email "actions@github.com"
+                  BRANCH_NAME="snapshot-$(date '+%Y-%m')-$(date '+%s')"
+                  git checkout -b "$BRANCH_NAME"
                   git add src/data/snapshots/*.json
-                  git commit -m "Add snapshot for $(date '+%Y-%m')" || echo "No changes to commit"
-                  git push origin HEAD:master
+                  if git diff --staged --quiet; then
+                    echo "No changes to commit"
+                    echo "has_changes=false" >> $GITHUB_OUTPUT
+                  else
+                    git commit -m "Add snapshot for $(date '+%Y-%m')"
+                    git push origin "$BRANCH_NAME"
+                    echo "has_changes=true" >> $GITHUB_OUTPUT
+                  fi
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Create Pull Request
+              if: steps.commit_snapshot.outputs.has_changes == 'true'
+              run: |
+                  BRANCH_NAME="snapshot-$(date '+%Y-%m')-$(date '+%s')"
+                  gh pr create --title "Add snapshot for $(date '+%Y-%m')" --body "Automated snapshot for $(date '+%Y-%m')" --base master --head "$BRANCH_NAME" --auto
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
