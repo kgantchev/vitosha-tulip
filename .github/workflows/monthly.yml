@@ -34,11 +34,6 @@ jobs:
                     echo "Not the last day of the month in EET."
                     echo "is_last_day=false" >> $GITHUB_OUTPUT
                   fi
-
-            - name: Stop if Not the Last Day
-              if: ${{ github.event_name == 'schedule' && steps.check_last_day.outputs.is_last_day != 'true' }}
-              run: exit 0
-
             - name: Setup Node.js Environment
               uses: actions/setup-node@v3
               with:
@@ -81,6 +76,10 @@ jobs:
                   --delete-branch
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Stop if Not the Last Day
+              if: ${{ github.event_name == 'schedule' && steps.check_last_day.outputs.is_last_day != 'true' }}
+              run: exit 0
 
             - name: Build the Website
               run: yarn build
