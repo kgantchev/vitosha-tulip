@@ -2,23 +2,36 @@ name: Monthly Snapshot and Deploy
 
 on:
     workflow_dispatch:
+        inputs:
+            skip-deploy:
+                description: 'Skip build and deploy steps (true/false)'
+                required: false
+                default: 'false'
+            restrict-last-day:
+                description: 'Restrict snapshot to last day of month (true/false)'
+                required: false
+                default: 'false'
+            dry-run:
+                description: 'Run snapshot without committing or creating PR (true/false)'
+                required: false
+                default: 'false'
     schedule:
         - cron: '0 21 28-31 * *' # At 21:00 UTC on days 28-31
 
 permissions:
-    contents: write # Grant write permissions for pushing commits and creating branches
-    pull-requests: write # Grant permissions for creating and managing pull requests
+    contents: write
+    pull-requests: write
 
 jobs:
     build-and-deploy:
         runs-on: ubuntu-latest
-        timeout-minutes: 20 # Fail-safe to kill workflow after 20 minutes
+        timeout-minutes: 20
 
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v3
               with:
-                  ref: master # Always start from master branch
+                  ref: master
 
             - name: Check if Today is the Last Day of the Month in EET
               id: check_last_day
@@ -60,6 +73,7 @@ jobs:
 
             - name: Create and Push Snapshot Branch
               id: commit_snapshot
+              if: ${{ inputs.dry-run != 'true' }}
               run: |
                   git config user.name "GitHub Actions Bot"
                   git config user.email "actions@github.com"
@@ -79,20 +93,23 @@ jobs:
 
             - name: Create Pull Request
               id: create_pr
-              if: steps.commit_snapshot.outputs.has_changes == 'true'
+              if: ${{ inputs.dry-run != 'true' && steps.commit_snapshot.outputs.has_changes == 'true' }}
               run: |
                   BRANCH_NAME="snapshot-$(date '+%Y-%m')-$(date '+%s')"
-                  PR_URL=$(gh pr create --title "Add snapshot for $(date '+%Y-%m')" --body "Automated snapshot for $(date '+%Y-%m')" --base master --head "$BRANCH_NAME" --auto --delete-branch)
+                  PR_URL=$(gh pr create --title "Add snapshot for $(date '+%Y-%m')" --body "Automated snapshot for $(date '+%Y-%m')" --base master --head "$BRANCH_NAME" --delete-branch)
                   echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Stop if Not the Last Day
-              if: ${{ github.event_name == 'schedule' && steps.check_last_day.outputs.is_last_day != 'true' }}
-              run: exit 0
+            - name: Enable Auto-Merge for Pull Request
+              if: ${{ inputs.dry-run != 'true' && steps.commit_snapshot.outputs.has_changes == 'true' }}
+              run: |
+                  gh pr merge --auto --squash "${{ steps.create_pr.outputs.pr_url }}"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Wait for Pull Request to Merge
-              if: steps.commit_snapshot.outputs.has_changes == 'true'
+              if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' && steps.commit_snapshot.outputs.has_changes == 'true' }}
               run: |
                   echo "Waiting for PR to merge: ${{ steps.create_pr.outputs.pr_url }}"
                   for i in {1..30}; do
@@ -109,19 +126,28 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: Stop if Not Last Day and Restricted
+              if: ${{ (github.event_name == 'schedule' || inputs.restrict-last-day == 'true') && steps.check_last_day.outputs.is_last_day != 'true' }}
+              run: |
+                  echo "Stopping workflow: Not the last day of the month ($CURRENT_DATE)."
+                  exit 0
+
             - name: Checkout Master After Merge
-              if: steps.commit_snapshot.outputs.has_changes == 'true'
+              if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' && steps.commit_snapshot.outputs.has_changes == 'true' }}
               uses: actions/checkout@v3
               with:
                   ref: master
 
             - name: Build the Website
+              if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' }}
               run: yarn build
 
             - name: Install Surge CLI
+              if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' }}
               run: npm install -g surge
 
             - name: Deploy to Surge Production
+              if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' }}
               env:
                   SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
               run: |
@@ -129,6 +155,7 @@ jobs:
                   surge --project ./build --domain vitosha-tulip.surge.sh --token "$SURGE_TOKEN"
 
             - name: Verify Deployment
+              if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' }}
               run: |
                   echo "Verifying that vitosha-tulip.surge.sh is live..."
                   curl -s -o /dev/null -w "%{http_code}" https://vitosha-tulip.surge.sh | grep 200
