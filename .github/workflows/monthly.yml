@@ -5,13 +5,20 @@ on:
     schedule:
         - cron: '0 21 28-31 * *' # At 21:00 UTC on days 28-31
 
+permissions:
+    contents: write # Grant write permissions for pushing commits and creating branches
+    pull-requests: write # Grant permissions for creating and managing pull requests
+
 jobs:
     build-and-deploy:
         runs-on: ubuntu-latest
+        timeout-minutes: 20 # Fail-safe to kill workflow after 20 minutes
 
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v3
+              with:
+                  ref: master # Always start from master branch
 
             - name: Check if Today is the Last Day of the Month in EET
               id: check_last_day
@@ -31,9 +38,9 @@ jobs:
                     echo "is_last_day=false" >> $GITHUB_OUTPUT
                   fi
 
-            - name: Stop if Not the Last Day
-              if: ${{ github.event_name == 'schedule' && steps.check_last_day.outputs.is_last_day != 'true' }}
-              run: exit 0
+            - name: Warn if Not Last Day for Workflow Dispatch
+              if: ${{ github.event_name == 'workflow_dispatch' && steps.check_last_day.outputs.is_last_day != 'true' }}
+              run: echo "WARNING: Running snapshot on a non-last day of the month ($CURRENT_DATE). Ensure this is intentional."
 
             - name: Setup Node.js Environment
               uses: actions/setup-node@v3
@@ -50,15 +57,62 @@ jobs:
                   CLICKUP_SPACE_ID: ${{ secrets.CLICKUP_SPACE_ID }}
               run: yarn snapshot
 
-            - name: Commit Snapshot
+            - name: Create and Push Snapshot Branch
+              id: commit_snapshot
               run: |
                   git config user.name "GitHub Actions Bot"
                   git config user.email "actions@github.com"
+                  BRANCH_NAME="snapshot-$(date '+%Y-%m')-$(date '+%s')"
+                  git checkout -b "$BRANCH_NAME"
                   git add src/data/snapshots/*.json
-                  git commit -m "Add snapshot for $(date '+%Y-%m')"
-                  git push
+                  if git diff --staged --quiet; then
+                    echo "No changes to commit"
+                    echo "has_changes=false" >> $GITHUB_OUTPUT
+                  else
+                    git commit -m "Add snapshot for $(date '+%Y-%m')"
+                    git push origin "$BRANCH_NAME"
+                    echo "has_changes=true" >> $GITHUB_OUTPUT
+                  fi
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Create Pull Request
+              id: create_pr
+              if: steps.commit_snapshot.outputs.has_changes == 'true'
+              run: |
+                  BRANCH_NAME="snapshot-$(date '+%Y-%m')-$(date '+%s')"
+                  PR_URL=$(gh pr create --title "Add snapshot for $(date '+%Y-%m')" --body "Automated snapshot for $(date '+%Y-%m')" --base master --head "$BRANCH_NAME" --auto --delete-branch)
+                  echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Stop if Not the Last Day
+              if: ${{ github.event_name == 'schedule' && steps.check_last_day.outputs.is_last_day != 'true' }}
+              run: exit 0
+
+            - name: Wait for Pull Request to Merge
+              if: steps.commit_snapshot.outputs.has_changes == 'true'
+              run: |
+                  echo "Waiting for PR to merge: ${{ steps.create_pr.outputs.pr_url }}"
+                  for i in {1..30}; do
+                    if gh pr view ${{ steps.create_pr.outputs.pr_url }} --json state | grep -q '"state":"OPEN"'; then
+                      echo "PR is still open, waiting... ($i/30)"
+                      sleep 10
+                    else
+                      echo "PR has merged or closed."
+                      exit 0
+                    fi
+                  done
+                  echo "Timeout waiting for PR to merge after 5 minutes."
+                  exit 1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Checkout Master After Merge
+              if: steps.commit_snapshot.outputs.has_changes == 'true'
+              uses: actions/checkout@v3
+              with:
+                  ref: master
 
             - name: Build the Website
               run: yarn build
@@ -77,4 +131,3 @@ jobs:
               run: |
                   echo "Verifying that vitosha-tulip.surge.sh is live..."
                   curl -s -o /dev/null -w "%{http_code}" https://vitosha-tulip.surge.sh | grep 200
-                  echo "Deployment verified successfully."
