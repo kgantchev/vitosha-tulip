@@ -3,7 +3,10 @@ name: Monthly Snapshot and Deploy
 on:
     workflow_dispatch:
     schedule:
-        - cron: '0 21 28-31 * *' # At 21:00 UTC on days 28-31
+        - cron: '0 21 28-31 * *'
+
+permissions:
+    contents: write
 
 jobs:
     build-and-deploy:
@@ -55,8 +58,8 @@ jobs:
                   git config user.name "GitHub Actions Bot"
                   git config user.email "actions@github.com"
                   git add src/data/snapshots/*.json
-                  git commit -m "Add snapshot for $(date '+%Y-%m')"
-                  git push
+                  git commit -m "Add snapshot for $(date '+%Y-%m')" || echo "No changes to commit"
+                  git push origin HEAD:master
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -77,4 +80,3 @@ jobs:
               run: |
                   echo "Verifying that vitosha-tulip.surge.sh is live..."
                   curl -s -o /dev/null -w "%{http_code}" https://vitosha-tulip.surge.sh | grep 200
-                  echo "Deployment verified successfully."
