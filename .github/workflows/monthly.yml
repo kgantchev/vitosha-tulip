@@ -78,6 +78,7 @@ jobs:
               run: |
                   BRANCH_NAME="snapshot-$(date '+%Y-%m')-$(date '+%s')"
                   gh pr create --title "Add snapshot for $(date '+%Y-%m')" --body "Automated snapshot for $(date '+%Y-%m')" --base master --head "$BRANCH_NAME" --auto
+                  --delete-branch
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
