@@ -37,19 +37,23 @@ jobs:
               id: check_last_day
               shell: bash
               run: |
-                  # Get current date in EET (Eastern European Time)
                   CURRENT_DATE=$(TZ="Europe/Sofia" date '+%Y-%m-%d')
                   TOMORROW_DATE=$(TZ="Europe/Sofia" date -d "$CURRENT_DATE + 1 day" '+%Y-%m-%d')
                   CURRENT_MONTH=$(TZ="Europe/Sofia" date '+%m')
                   TOMORROW_MONTH=$(TZ="Europe/Sofia" date -d "$TOMORROW_DATE" '+%m')
-
                   if [ "$CURRENT_MONTH" != "$TOMORROW_MONTH" ]; then
-                    echo "It's the last day of the month in EET."
-                    echo "is_last_day=true" >> $GITHUB_OUTPUT
+                      echo "It's the last day of the month in EET."
+                      echo "is_last_day=true" >> $GITHUB_OUTPUT
                   else
-                    echo "Not the last day of the month in EET."
-                    echo "is_last_day=false" >> $GITHUB_OUTPUT
+                      echo "Not the last day of the month in EET."
+                      echo "is_last_day=false" >> $GITHUB_OUTPUT
                   fi
+
+            - name: Stop if Not Last Day and Restricted
+              if: ${{ (github.event_name == 'schedule' || inputs.restrict-last-day == 'true') && steps.check_last_day.outputs.is_last_day != 'true' }}
+              run: |
+                  echo "Stopping workflow: Not the last day of the month ($(TZ="Europe/Sofia" date '+%Y-%m-%d'))."
+                  exit 0
 
             - name: Warn if Not Last Day for Workflow Dispatch
               if: ${{ github.event_name == 'workflow_dispatch' && steps.check_last_day.outputs.is_last_day != 'true' && inputs.restrict-last-day != 'true' }}
@@ -78,15 +82,16 @@ jobs:
                   git config user.name "GitHub Actions Bot"
                   git config user.email "actions@github.com"
                   BRANCH_NAME="snapshot-$(date '+%Y-%m')-$(date '+%s')"
+                  echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
                   git checkout -b "$BRANCH_NAME"
                   git add src/data/snapshots/*.json
                   if git diff --staged --quiet; then
-                    echo "No changes to commit"
-                    echo "has_changes=false" >> $GITHUB_OUTPUT
+                      echo "No changes to commit"
+                      echo "has_changes=false" >> $GITHUB_OUTPUT
                   else
-                    git commit -m "Add snapshot for $(date '+%Y-%m')"
-                    git push origin "$BRANCH_NAME"
-                    echo "has_changes=true" >> $GITHUB_OUTPUT
+                      git commit -m "Add snapshot for $(date '+%Y-%m')"
+                      git push origin "$BRANCH_NAME"
+                      echo "has_changes=true" >> $GITHUB_OUTPUT
                   fi
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -95,16 +100,8 @@ jobs:
               id: create_pr
               if: ${{ inputs.dry-run != 'true' && steps.commit_snapshot.outputs.has_changes == 'true' }}
               run: |
-                  BRANCH_NAME="snapshot-$(date '+%Y-%m')-$(date '+%s')"
-                  PR_URL=$(gh pr create --title "Add snapshot for $(date '+%Y-%m')" --body "Automated snapshot for $(date '+%Y-%m')" --base master --head "$BRANCH_NAME" --delete-branch)
+                  PR_URL=$(gh pr create --title "Add snapshot for $(date '+%Y-%m')" --body "Automated snapshot for $(date '+%Y-%m')" --base master --head "${{ steps.commit_snapshot.outputs.branch_name }}")
                   echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Enable Auto-Merge for Pull Request
-              if: ${{ inputs.dry-run != 'true' && steps.commit_snapshot.outputs.has_changes == 'true' }}
-              run: |
-                  gh pr merge --auto --squash "${{ steps.create_pr.outputs.pr_url }}"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -113,24 +110,18 @@ jobs:
               run: |
                   echo "Waiting for PR to merge: ${{ steps.create_pr.outputs.pr_url }}"
                   for i in {1..30}; do
-                    if gh pr view ${{ steps.create_pr.outputs.pr_url }} --json state | grep -q '"state":"OPEN"'; then
-                      echo "PR is still open, waiting... ($i/30)"
-                      sleep 10
-                    else
-                      echo "PR has merged or closed."
-                      exit 0
-                    fi
+                      if gh pr view ${{ steps.create_pr.outputs.pr_url }} --json state | grep -q '"state":"OPEN"'; then
+                          echo "PR is still open, waiting... ($i/30)"
+                          sleep 10
+                      else
+                          echo "PR has merged or closed."
+                          exit 0
+                      fi
                   done
                   echo "Timeout waiting for PR to merge after 5 minutes."
                   exit 1
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Stop if Not Last Day and Restricted
-              if: ${{ (github.event_name == 'schedule' || inputs.restrict-last-day == 'true') && steps.check_last_day.outputs.is_last_day != 'true' }}
-              run: |
-                  echo "Stopping workflow: Not the last day of the month ($CURRENT_DATE)."
-                  exit 0
 
             - name: Checkout Master After Merge
               if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' && steps.commit_snapshot.outputs.has_changes == 'true' }}
