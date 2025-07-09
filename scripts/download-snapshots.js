@@ -1,6 +1,6 @@
 // scripts/download-snapshots.js
 
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const dayjs = require('dayjs');
 const mime = require('mime-types');
@@ -11,14 +11,61 @@ require('dotenv').config();
 const CLICKUP_API_TOKEN = process.env.PERSONAL_ACCESS_TOKEN;
 const SPACE_ID = process.env.CLICKUP_SPACE_ID;
 const SNAPSHOTS_DIR = path.join(__dirname, '../src/data/snapshots');
+const DEPLOYED_URL = 'https://vitosha-tulip.surge.sh/data/snapshots';
 
 const headers = {
     Authorization: CLICKUP_API_TOKEN,
 };
 
 // Ensure the snapshots directory exists
-if (!fs.existsSync(SNAPSHOTS_DIR)) {
-    fs.mkdirSync(SNAPSHOTS_DIR, { recursive: true });
+async function ensureSnapshotsDir() {
+    await fs.mkdir(SNAPSHOTS_DIR, { recursive: true });
+}
+
+// Fetch snapshot from deployed website
+async function fetchPreviousSnapshot(year, month) {
+    const snapshotUrl = `${DEPLOYED_URL}/${year}-${month}.json`;
+    try {
+        const response = await fetch(snapshotUrl);
+        if (!response.ok) {
+            console.log(`Snapshot ${year}-${month}.json not found on deployed site: ${response.status}`);
+            return null;
+        }
+        const data = await response.json();
+        const snapshotPath = path.join(SNAPSHOTS_DIR, `${year}-${month}.json`);
+        await fs.writeFile(snapshotPath, JSON.stringify(data, null, 2));
+        console.log(`Downloaded snapshot ${year}-${month}.json from ${snapshotUrl}`);
+        return data;
+    } catch (error) {
+        console.error(`Error fetching snapshot ${year}-${month}.json:`, error.message);
+        return null;
+    }
+}
+
+// Fetch previous snapshots if not present locally
+async function fetchPreviousSnapshots() {
+    await ensureSnapshotsDir();
+    const currentDate = dayjs();
+    const currentYear = currentDate.year();
+    const currentMonth = currentDate.month() + 1; // 1-12
+    const snapshotsToFetch = [];
+
+    // Check last 12 months to avoid excessive requests
+    for (let i = 1; i <= 12; i++) {
+        const date = currentDate.subtract(i, 'month');
+        const year = date.year();
+        const month = date.format('MM');
+        const snapshotPath = path.join(SNAPSHOTS_DIR, `${year}-${month}.json`);
+        try {
+            await fs.access(snapshotPath); // Check if file exists
+        } catch {
+            snapshotsToFetch.push({ year, month });
+        }
+    }
+
+    for (const { year, month } of snapshotsToFetch) {
+        await fetchPreviousSnapshot(year, month);
+    }
 }
 
 // Get the start and end of the current month in milliseconds
@@ -207,6 +254,10 @@ async function fetchTasksForList(listId, listName, statuses) {
 
 // Main function to download all snapshots
 async function downloadSnapshot() {
+    // Fetch previous snapshots from the deployed site if not present locally
+    await fetchPreviousSnapshots();
+
+    // Generate current month's snapshot
     const lists = await fetchLists();
     const currentDate = dayjs().format('YYYY-MM');
     const snapshotPath = path.join(SNAPSHOTS_DIR, `${currentDate}.json`);
@@ -263,7 +314,7 @@ async function downloadSnapshot() {
         });
     }
 
-    fs.writeFileSync(snapshotPath, JSON.stringify(snapshotData, null, 2));
+    await fs.writeFile(snapshotPath, JSON.stringify(snapshotData, null, 2));
     console.log(`Snapshot saved to ${snapshotPath}`);
 }
 
@@ -276,6 +327,8 @@ module.exports = {
     sanitizeTask,
     fetchTasksForList,
     downloadSnapshot,
+    fetchPreviousSnapshot,
+    fetchPreviousSnapshots,
 };
 
 // Execute the main function if the script is run directly
