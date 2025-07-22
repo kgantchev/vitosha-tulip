@@ -16,7 +16,7 @@ on:
                 required: false
                 default: 'false'
     schedule:
-        - cron: '0 21 28-31 * *' # At 21:00 UTC on days 28-31
+        - cron: '0 21 28-31 * *'
 
 permissions:
     contents: write
@@ -52,13 +52,13 @@ jobs:
             - name: Stop if Not Last Day and Restricted
               if: ${{ (github.event_name == 'schedule' || inputs.restrict-last-day == 'true') && steps.check_last_day.outputs.is_last_day != 'true' }}
               run: |
-                  echo "Stopping workflow: Not the last day of the month ($(TZ="Europe/Sofia" date '+%Y-%m-%d'))."
+                  echo "Stopping workflow: Not the last day of the month ($(TZ=\"Europe/Sofia\" date '+%Y-%m-%d'))."
                   exit 0
 
             - name: Warn if Not Last Day for Workflow Dispatch
               if: ${{ github.event_name == 'workflow_dispatch' && steps.check_last_day.outputs.is_last_day != 'true' && inputs.restrict-last-day != 'true' }}
               run: |
-                  echo "WARNING: Running snapshot on a non-last day of the month ($(TZ="Europe/Sofia" date '+%Y-%m-%d')). Ensure this is intentional."
+                  echo "WARNING: Running snapshot on a non-last day of the month ($(TZ=\"Europe/Sofia\" date '+%Y-%m-%d')). Ensure this is intentional."
 
             - name: Setup Node.js Environment
               uses: actions/setup-node@v3
@@ -81,7 +81,7 @@ jobs:
               run: |
                   git config user.name "GitHub Actions Bot"
                   git config user.email "actions@github.com"
-                  BRANCH_NAME="snapshot-$(date '+%Y-%m')-$(date '+%s')"
+                  BRANCH_NAME="snapshot-$(date '+%Y-%m')"
                   echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
                   git checkout -b "$BRANCH_NAME"
                   git add src/data/snapshots/*.json
@@ -102,12 +102,6 @@ jobs:
                   gh pr create --title "Add snapshot for $(date '+%Y-%m')" --body "Automated snapshot for $(date '+%Y-%m')" --base master --head "${{ steps.commit_snapshot.outputs.branch_name }}"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Copy Snapshots to Build
-              if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' }}
-              run: |
-                  mkdir -p build/data/snapshots
-                  cp -r src/data/snapshots/*.json build/data/snapshots/
 
             - name: Build the Website
               if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' }}

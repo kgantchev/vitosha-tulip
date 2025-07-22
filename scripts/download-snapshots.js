@@ -1,5 +1,4 @@
 // scripts/download-snapshots.js
-
 const fs = require('fs').promises;
 const path = require('path');
 const dayjs = require('dayjs');
@@ -11,7 +10,6 @@ require('dotenv').config();
 const CLICKUP_API_TOKEN = process.env.PERSONAL_ACCESS_TOKEN;
 const SPACE_ID = process.env.CLICKUP_SPACE_ID;
 const SNAPSHOTS_DIR = path.join(__dirname, '../src/data/snapshots');
-const DEPLOYED_URL = 'https://vitosha-tulip.surge.sh/data/snapshots';
 
 const headers = {
     Authorization: CLICKUP_API_TOKEN,
@@ -19,52 +17,14 @@ const headers = {
 
 // Ensure the snapshots directory exists
 async function ensureSnapshotsDir() {
-    await fs.mkdir(SNAPSHOTS_DIR, { recursive: true });
-}
-
-// Fetch snapshot from deployed website
-async function fetchPreviousSnapshot(year, month) {
-    const snapshotUrl = `${DEPLOYED_URL}/${year}-${month}.json`;
     try {
-        const response = await fetch(snapshotUrl);
-        if (!response.ok) {
-            console.log(`Snapshot ${year}-${month}.json not found on deployed site: ${response.status}`);
-            return null;
-        }
-        const data = await response.json();
-        const snapshotPath = path.join(SNAPSHOTS_DIR, `${year}-${month}.json`);
-        await fs.writeFile(snapshotPath, JSON.stringify(data, null, 2));
-        console.log(`Downloaded snapshot ${year}-${month}.json from ${snapshotUrl}`);
-        return data;
+        await fs.mkdir(SNAPSHOTS_DIR, { recursive: true });
+        console.log(`Created directory: ${SNAPSHOTS_DIR}`);
     } catch (error) {
-        console.error(`Error fetching snapshot ${year}-${month}.json:`, error.message);
-        return null;
-    }
-}
-
-// Fetch previous snapshots if not present locally
-async function fetchPreviousSnapshots() {
-    await ensureSnapshotsDir();
-    const currentDate = dayjs();
-    const currentYear = currentDate.year();
-    const currentMonth = currentDate.month() + 1; // 1-12
-    const snapshotsToFetch = [];
-
-    // Check last 12 months to avoid excessive requests
-    for (let i = 1; i <= 12; i++) {
-        const date = currentDate.subtract(i, 'month');
-        const year = date.year();
-        const month = date.format('MM');
-        const snapshotPath = path.join(SNAPSHOTS_DIR, `${year}-${month}.json`);
-        try {
-            await fs.access(snapshotPath); // Check if file exists
-        } catch {
-            snapshotsToFetch.push({ year, month });
+        if (error.code !== 'EEXIST') {
+            console.error(`Error creating directory ${SNAPSHOTS_DIR}:`, error.message);
+            throw error;
         }
-    }
-
-    for (const { year, month } of snapshotsToFetch) {
-        await fetchPreviousSnapshot(year, month);
     }
 }
 
@@ -76,6 +36,10 @@ const nextMonthStart = dayjs().add(1, 'month').startOf('month').valueOf();
 async function fetchLists() {
     try {
         const response = await fetch(`https://api.clickup.com/api/v2/space/${SPACE_ID}/list`, { headers });
+        if (!response.ok) {
+            console.error(`HTTP error ${response.status}: ${response.statusText} for lists`);
+            return [];
+        }
         const data = await response.json();
         return data.lists || [];
     } catch (error) {
@@ -86,8 +50,16 @@ async function fetchLists() {
 
 // Fetch list details including statuses
 async function fetchListDetails(listId) {
+    if (!listId) {
+        console.error('Missing listId');
+        return null;
+    }
     try {
         const response = await fetch(`https://api.clickup.com/api/v2/list/${listId}`, { headers });
+        if (!response.ok) {
+            console.error(`HTTP error ${response.status}: ${response.statusText} for list ${listId}`);
+            return null;
+        }
         const data = await response.json();
         return data;
     } catch (error) {
@@ -98,11 +70,19 @@ async function fetchListDetails(listId) {
 
 // Fetch task details including attachments
 async function fetchTaskDetails(taskId) {
+    if (!taskId) {
+        console.error('Missing taskId');
+        return null;
+    }
     try {
         const response = await fetch(
             `https://api.clickup.com/api/v2/task/${taskId}?include=attachments`,
             { headers }
         );
+        if (!response.ok) {
+            console.error(`HTTP error ${response.status}: ${response.statusText} for task ${taskId}`);
+            return null;
+        }
         const data = await response.json();
         return data;
     } catch (error) {
@@ -131,7 +111,7 @@ async function processAttachment(attachment) {
         image = image.resize(300, 300, { fit: 'inside' });
 
         if (imageFormat === 'png') {
-            image = image.png({ quality: 900, compressionLevel: 9 });
+            image = image.png({ quality: 90, compressionLevel: 9 });
         } else if (imageFormat === 'webp') {
             image = image.webp({ quality: 90 });
         } else {
@@ -167,12 +147,20 @@ function sanitizeTask(task, listName) {
 
 // Fetch and organize tasks for a given list by status
 async function fetchTasksForList(listId, listName, statuses) {
+    if (!listId || !listName || !statuses) {
+        console.error(`Invalid parameters: listId=${listId}, listName=${listName}, statuses=${!!statuses}`);
+        return { kanbanColumns: {}, tasks: [] };
+    }
     try {
         // Include 'date_status_changed' and closed tasks in the API request
         const response = await fetch(
             `https://api.clickup.com/api/v2/list/${listId}/task?include=date_status_changed&include_closed=true`,
             { headers }
         );
+        if (!response.ok) {
+            console.error(`HTTP error ${response.status}: ${response.statusText} for list ${listId}`);
+            return { kanbanColumns: {}, tasks: [] };
+        }
         const data = await response.json();
         const tasks = data.tasks || [];
 
@@ -187,7 +175,7 @@ async function fetchTasksForList(listId, listName, statuses) {
         for (const task of tasks) {
             const taskStatus = task.status.status.toLowerCase();
 
-            // Determine if the task should be included based on your criteria
+            // Determine if the task should be included based on criteria
             let includeTask = false;
 
             if (taskStatus === 'complete') {
@@ -222,7 +210,7 @@ async function fetchTasksForList(listId, listName, statuses) {
                         imageAttachments.push({
                             id: attachment.id,
                             fileName: attachment.title,
-                            base64Image, // Include the Base64 string
+                            base64Image,
                         });
                     }
                 }
@@ -252,10 +240,9 @@ async function fetchTasksForList(listId, listName, statuses) {
     }
 }
 
-// Main function to download all snapshots
+// Main function to generate current month's snapshot
 async function downloadSnapshot() {
-    // Fetch previous snapshots from the deployed site if not present locally
-    await fetchPreviousSnapshots();
+    await ensureSnapshotsDir();
 
     // Generate current month's snapshot
     const lists = await fetchLists();
@@ -314,8 +301,13 @@ async function downloadSnapshot() {
         });
     }
 
-    await fs.writeFile(snapshotPath, JSON.stringify(snapshotData, null, 2));
-    console.log(`Snapshot saved to ${snapshotPath}`);
+    try {
+        await fs.writeFile(snapshotPath, JSON.stringify(snapshotData, null, 2));
+        console.log(`Snapshot saved to ${snapshotPath}`);
+    } catch (error) {
+        console.error(`Error saving snapshot to ${snapshotPath}:`, error.message);
+        process.exit(1);
+    }
 }
 
 // Exported functions for testing
@@ -327,11 +319,14 @@ module.exports = {
     sanitizeTask,
     fetchTasksForList,
     downloadSnapshot,
-    fetchPreviousSnapshot,
-    fetchPreviousSnapshots,
 };
 
 // Execute the main function if the script is run directly
 if (require.main === module) {
+    if (!CLICKUP_API_TOKEN || !SPACE_ID) {
+        console.error('Environment variables PERSONAL_ACCESS_TOKEN and CLICKUP_SPACE_ID are required');
+        process.exit(1);
+    }
+
     downloadSnapshot();
 }
