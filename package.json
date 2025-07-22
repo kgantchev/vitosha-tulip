@@ -8,6 +8,7 @@
         "@mui/icons-material": "^6.1.6",
         "@mui/material": "^6.1.6",
         "dayjs": "^1.11.13",
+        "dayjs-plugin-utc": "^0.1.2",
         "dotenv": "^16.4.5",
         "js-cookie": "^3.0.5",
         "mime-types": "^2.1.35",

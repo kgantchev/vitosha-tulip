@@ -10,13 +10,13 @@ on:
             restrict-last-day:
                 description: 'Restrict snapshot to last day of month (true/false)'
                 required: false
-                default: 'false'
+                default: 'true'
             dry-run:
                 description: 'Run snapshot without committing or creating PR (true/false)'
                 required: false
                 default: 'false'
     schedule:
-        - cron: '0 21 28-31 * *' # At 21:00 UTC on days 28-31
+        - cron: '0 21 28-31 * *'
 
 permissions:
     contents: write
@@ -52,13 +52,13 @@ jobs:
             - name: Stop if Not Last Day and Restricted
               if: ${{ (github.event_name == 'schedule' || inputs.restrict-last-day == 'true') && steps.check_last_day.outputs.is_last_day != 'true' }}
               run: |
-                  echo "Stopping workflow: Not the last day of the month ($(TZ="Europe/Sofia" date '+%Y-%m-%d'))."
+                  echo "Stopping workflow: Not the last day of the month ($(TZ=\"Europe/Sofia\" date '+%Y-%m-%d'))."
                   exit 0
 
             - name: Warn if Not Last Day for Workflow Dispatch
               if: ${{ github.event_name == 'workflow_dispatch' && steps.check_last_day.outputs.is_last_day != 'true' && inputs.restrict-last-day != 'true' }}
               run: |
-                  echo "WARNING: Running snapshot on a non-last day of the month ($(TZ="Europe/Sofia" date '+%Y-%m-%d')). Ensure this is intentional."
+                  echo "WARNING: Running snapshot on a non-last day of the month ($(TZ=\"Europe/Sofia\" date '+%Y-%m-%d')). Ensure this is intentional."
 
             - name: Setup Node.js Environment
               uses: actions/setup-node@v3
@@ -81,7 +81,7 @@ jobs:
               run: |
                   git config user.name "GitHub Actions Bot"
                   git config user.email "actions@github.com"
-                  BRANCH_NAME="snapshot-$(date '+%Y-%m')-$(date '+%s')"
+                  BRANCH_NAME="snapshot-$(date '+%Y-%m')"
                   echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
                   git checkout -b "$BRANCH_NAME"
                   git add src/data/snapshots/*.json
@@ -97,37 +97,11 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Create Pull Request
-              id: create_pr
               if: ${{ inputs.dry-run != 'true' && steps.commit_snapshot.outputs.has_changes == 'true' }}
               run: |
-                  PR_URL=$(gh pr create --title "Add snapshot for $(date '+%Y-%m')" --body "Automated snapshot for $(date '+%Y-%m')" --base master --head "${{ steps.commit_snapshot.outputs.branch_name }}")
-                  echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+                  gh pr create --title "Add snapshot for $(date '+%Y-%m')" --body "Automated snapshot for $(date '+%Y-%m')" --base master --head "${{ steps.commit_snapshot.outputs.branch_name }}"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Wait for Pull Request to Merge
-              if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' && steps.commit_snapshot.outputs.has_changes == 'true' }}
-              run: |
-                  echo "Waiting for PR to merge: ${{ steps.create_pr.outputs.pr_url }}"
-                  for i in {1..30}; do
-                      if gh pr view ${{ steps.create_pr.outputs.pr_url }} --json state | grep -q '"state":"OPEN"'; then
-                          echo "PR is still open, waiting... ($i/30)"
-                          sleep 10
-                      else
-                          echo "PR has merged or closed."
-                          exit 0
-                      fi
-                  done
-                  echo "Timeout waiting for PR to merge after 5 minutes."
-                  exit 1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Checkout Master After Merge
-              if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' && steps.commit_snapshot.outputs.has_changes == 'true' }}
-              uses: actions/checkout@v3
-              with:
-                  ref: master
 
             - name: Build the Website
               if: ${{ inputs.dry-run != 'true' && inputs.skip-deploy != 'true' }}

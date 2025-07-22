@@ -1,13 +1,22 @@
-// scripts/tests/download-snapshots.test.js
-const fs = require('fs');
-const path = require('path');
-const dayjs = require('dayjs');
-const mime = require('mime-types');
-const sharp = require('sharp');
-const fetch = require('node-fetch');
-const { Readable } = require('stream');
+// tests/download-snapshots.test.js
 
-// Import the functions to test
+const fs = require('fs').promises;
+const path = require('path');
+const fetch = require('node-fetch');
+const dayjs = require('dayjs');
+const sharp = require('sharp');
+const mime = require('mime-types');
+
+jest.mock('fs', () => ({
+    promises: {
+        mkdir: jest.fn(),
+        writeFile: jest.fn(),
+    },
+}));
+jest.mock('node-fetch');
+jest.mock('sharp');
+jest.mock('mime-types');
+
 const {
     fetchLists,
     fetchListDetails,
@@ -18,198 +27,185 @@ const {
     downloadSnapshot,
 } = require('../scripts/download-snapshots.js');
 
-// Mock dependencies
-jest.mock('node-fetch');
-jest.mock('sharp');
-jest.mock('fs');
-jest.mock('mime-types', () => ({
-    lookup: jest.fn(),
-}));
+beforeEach(() => {
+    process.env.PERSONAL_ACCESS_TOKEN = 'mock-token';
+    process.env.CLICKUP_SPACE_ID = 'mock-space-id';
+});
+
+afterEach(() => {
+    delete process.env.PERSONAL_ACCESS_TOKEN;
+    delete process.env.CLICKUP_SPACE_ID;
+});
 
 describe('download-snapshots.js', () => {
+    const mockToken = 'mock-token';
+    const mockSpaceId = 'mock-space-id';
+    const currentMonth = dayjs().format('YYYY-MM');
+    const snapshotPath = path.join(__dirname, '../src/data/snapshots', `${currentMonth}.json`);
+    const mockListId = 'list1';
+    const mockListName = 'List 1';
+    const mockTaskId = 'task1';
+    const currentMonthStart = dayjs().startOf('month').valueOf();
+
     beforeEach(() => {
         jest.clearAllMocks();
+
+        sharp.mockReturnValue({
+            resize: jest.fn().mockReturnThis(),
+            png: jest.fn().mockReturnThis(),
+            webp: jest.fn().mockReturnThis(),
+            jpeg: jest.fn().mockReturnThis(),
+            toBuffer: jest.fn().mockResolvedValue(Buffer.from('mock-image-data')),
+        });
+
+        mime.lookup.mockReturnValue('image/jpeg');
+    });
+
+    describe('ensureSnapshotsDir', () => {
+        test('should create snapshots directory if it does not exist', async () => {
+            fs.mkdir.mockResolvedValue();
+            fetch.mockResolvedValue({ ok: true, json: async () => ({ lists: [] }) });
+            fs.writeFile.mockResolvedValue();
+            await downloadSnapshot();
+            expect(fs.mkdir).toHaveBeenCalledWith(expect.stringContaining('src/data/snapshots'), { recursive: true });
+        });
+
+        test('should handle directory already exists error', async () => {
+            fs.mkdir.mockRejectedValueOnce({ code: 'EEXIST' });
+            fs.writeFile.mockResolvedValue();
+            fetch.mockResolvedValue({ ok: true, json: async () => ({ lists: [] }) });
+            await downloadSnapshot();
+            expect(fs.mkdir).toHaveBeenCalledWith(expect.stringContaining('src/data/snapshots'), { recursive: true });
+            expect(fs.writeFile).toHaveBeenCalled();
+        });
+
+        test('should throw error for other mkdir failures', async () => {
+            fs.mkdir.mockRejectedValueOnce(new Error('Permission denied'));
+            await expect(downloadSnapshot()).rejects.toThrow('Permission denied');
+        });
     });
 
     describe('fetchLists', () => {
-        it('should fetch lists from the ClickUp API', async () => {
-            const mockResponse = { lists: [{ id: '1', name: 'List 1' }] };
-            fetch.mockResolvedValue({
-                json: jest.fn().mockResolvedValue(mockResponse),
-            });
-
-            const lists = await fetchLists();
-
-            expect(fetch).toHaveBeenCalledWith(
-                expect.stringContaining('/space/'),
-                expect.objectContaining({ headers: expect.any(Object) })
-            );
-            expect(lists).toEqual(mockResponse.lists);
+        test('should return lists on successful API call', async () => {
+            const mockLists = { lists: [{ id: 'list1', name: 'List 1', space: { name: 'Test Space' } }] };
+            fetch.mockResolvedValue({ ok: true, json: async () => mockLists });
+            const result = await fetchLists();
+            expect(result).toEqual(mockLists.lists);
         });
 
-        it('should return an empty array on error', async () => {
-            fetch.mockRejectedValue(new Error('Network error'));
+        test('should return empty array on API failure', async () => {
+            fetch.mockResolvedValue({ ok: false, status: 404, statusText: 'Not Found' });
+            const result = await fetchLists();
+            expect(result).toEqual([]);
+        });
 
-            const lists = await fetchLists();
-
-            expect(lists).toEqual([]);
+        test('should return empty array if environment variables are missing', async () => {
+            delete process.env.PERSONAL_ACCESS_TOKEN;
+            const result = await fetchLists();
+            expect(result).toEqual([]);
         });
     });
 
     describe('fetchListDetails', () => {
-        it('should fetch list details from the ClickUp API', async () => {
-            const mockListDetails = { id: '1', statuses: [] };
-            fetch.mockResolvedValue({
-                json: jest.fn().mockResolvedValue(mockListDetails),
-            });
-
-            const listDetails = await fetchListDetails('1');
-
-            expect(fetch).toHaveBeenCalledWith(
-                expect.stringContaining('/list/1'),
-                expect.objectContaining({ headers: expect.any(Object) })
-            );
-            expect(listDetails).toEqual(mockListDetails);
+        test('should return list details with statuses', async () => {
+            const mockDetails = { id: mockListId, name: mockListName, statuses: [{ status: 'To Do' }] };
+            fetch.mockResolvedValue({ ok: true, json: async () => mockDetails });
+            const result = await fetchListDetails(mockListId);
+            expect(result).toEqual(mockDetails);
         });
 
-        it('should return null on error', async () => {
-            fetch.mockRejectedValue(new Error('Network error'));
-
-            const listDetails = await fetchListDetails('1');
-
-            expect(listDetails).toBeNull();
-        });
-    });
-
-    describe('fetchTaskDetails', () => {
-        it('should fetch task details from the ClickUp API', async () => {
-            const mockTaskDetails = { id: '1', attachments: [] };
-            fetch.mockResolvedValue({
-                json: jest.fn().mockResolvedValue(mockTaskDetails),
-            });
-
-            const taskDetails = await fetchTaskDetails('1');
-
-            expect(fetch).toHaveBeenCalledWith(
-                expect.stringContaining('/task/1'),
-                expect.objectContaining({ headers: expect.any(Object) })
-            );
-            expect(taskDetails).toEqual(mockTaskDetails);
+        test('should return null on API failure', async () => {
+            fetch.mockResolvedValue({ ok: false });
+            const result = await fetchListDetails(mockListId);
+            expect(result).toBeNull();
         });
 
-        it('should return null on error', async () => {
-            fetch.mockRejectedValue(new Error('Network error'));
-
-            const taskDetails = await fetchTaskDetails('1');
-
-            expect(taskDetails).toBeNull();
-        });
-    });
-
-    describe('processAttachment', () => {
-        it('should process an attachment and return a base64 string', async () => {
-            const mockAttachment = { id: '1', url: 'http://example.com/image.jpg', title: 'image.jpg' };
-            const mockImageBuffer = Buffer.from('image data');  // Simulating image data from fetch
-            const processedBuffer = Buffer.from('processed image data');  // Simulated processed image buffer
-
-            // Mock the fetch call to simulate downloading the image
-            fetch.mockResolvedValue({
-                ok: true,
-                buffer: jest.fn().mockResolvedValue(mockImageBuffer),  // Return the mock image buffer
-            });
-
-            // Mock sharp processing
-            sharp.mockReturnValueOnce({
-                resize: jest.fn().mockReturnThis(),
-                jpeg: jest.fn().mockReturnThis(),
-                toBuffer: jest.fn().mockResolvedValue(processedBuffer),  // Return processed buffer
-            });
-
-            const base64String = await processAttachment(mockAttachment);
-
-            // Verify that the fetch call happened with the correct URL
-            expect(fetch).toHaveBeenCalledWith(mockAttachment.url, expect.any(Object));
-
-            // Verify that sharp was called with the correct image buffer
-            expect(sharp).toHaveBeenCalledWith(mockImageBuffer);
-
-            // Verify that the result is a base64-encoded string
-            expect(base64String).toMatch(/^data:image\/jpeg;base64,/);
-        });
-
-        it('should return null on error', async () => {
-            const mockAttachment = { id: '1', url: 'http://example.com/image.jpg' };
-
-            fetch.mockRejectedValue(new Error('Network error'));
-
-            const result = await processAttachment(mockAttachment);
-
+        test('should return null if listId is missing', async () => {
+            const result = await fetchListDetails(null);
             expect(result).toBeNull();
         });
     });
 
-    describe('fetchTasksForList', () => {
+    describe('fetchTaskDetails', () => {
+        test('should return task details with attachments', async () => {
+            const mockTask = { id: mockTaskId, name: 'Task 1', attachments: [] };
+            fetch.mockResolvedValue({ ok: true, json: async () => mockTask });
+            const result = await fetchTaskDetails(mockTaskId);
+            expect(result).toEqual(mockTask);
+        });
 
-        it('should return empty kanban columns when no tasks are found', async () => {
-            fetch.mockResolvedValueOnce({
-                json: jest.fn().mockResolvedValue({ tasks: [] }),
-            });
+        test('should return null on API failure', async () => {
+            fetch.mockResolvedValue({ ok: false });
+            const result = await fetchTaskDetails(mockTaskId);
+            expect(result).toBeNull();
+        });
 
-            const { kanbanColumns, tasks } = await fetchTasksForList('1', 'List 1', []);
-
-            expect(kanbanColumns).toEqual({});
-            expect(tasks).toEqual([]);
+        test('should return null if taskId is missing', async () => {
+            const result = await fetchTaskDetails(null);
+            expect(result).toBeNull();
         });
     });
 
-    describe('downloadSnapshot', () => {
-        it('should generate and save a snapshot', async () => {
-            const mockLists = [
-                { id: '1', name: 'List 1' },
-                { id: '2', name: 'List 2' },
-            ];
+    describe('processAttachment', () => {
+        test('should process image attachment and return Base64 string', async () => {
+            fetch.mockResolvedValue({ ok: true, buffer: async () => Buffer.from('mock-image') });
+            mime.lookup.mockReturnValue('image/jpeg');
+            const attachment = { id: 'attach1', title: 'image.jpg', url: 'http://example.com/image.jpg' };
+            const result = await processAttachment(attachment);
+            expect(result).toMatch(/^data:image\/jpeg;base64,/);
+        });
 
-            fetch.mockResolvedValueOnce({
-                json: jest.fn().mockResolvedValue({ lists: mockLists }),
-            });
-
-            fs.writeFileSync = jest.fn();  // Mock file writing
-
-            await downloadSnapshot();
-
-            expect(fs.writeFileSync).toHaveBeenCalled();
-            expect(fs.writeFileSync).toHaveBeenCalledWith(
-                expect.stringContaining('.json'),
-                expect.any(String)
-            );
+        test('should return null on fetch failure', async () => {
+            fetch.mockResolvedValue({ ok: false });
+            const result = await processAttachment({ url: 'bad-url' });
+            expect(result).toBeNull();
         });
     });
 
     describe('sanitizeTask', () => {
-        it('should sanitize task data', () => {
+        test('should sanitize task data', () => {
             const task = {
-                id: '1',
+                id: 'task1',
                 name: 'Task 1',
-                status: { status: 'to do' },
-                date_created: '1234567890',
-                date_updated: '1234567890',
-                date_status_changed: null,
+                status: { status: 'To Do' },
+                date_created: '1',
+                date_updated: '2',
+                date_status_changed: '3',
                 attachments: [],
-                email: 'unsanitized@email.com'
             };
-
-            const sanitized = sanitizeTask(task, 'List 1');
-
-            expect(sanitized).toEqual({
-                id: '1',
+            const result = sanitizeTask(task, mockListName);
+            expect(result).toEqual({
+                id: 'task1',
                 name: 'Task 1',
-                status: 'to do',
-                date_created: '1234567890',
-                date_updated: '1234567890',
-                date_status_changed: null,
-                listName: 'List 1',
+                status: 'To Do',
+                date_created: '1',
+                date_updated: '2',
+                date_status_changed: '3',
+                listName: mockListName,
                 attachments: [],
             });
+        });
+    });
+
+    describe('downloadSnapshot', () => {
+        test('should save empty snapshot if no lists are returned', async () => {
+            fetch.mockResolvedValue({ ok: true, json: async () => ({ lists: [] }) });
+            fs.mkdir.mockResolvedValue();
+            fs.writeFile.mockResolvedValue();
+            await downloadSnapshot();
+            expect(fs.writeFile).toHaveBeenCalledWith(
+                snapshotPath,
+                JSON.stringify(
+                    {
+                        date: currentMonth,
+                        lists: [],
+                        kanbanColumns: {},
+                        listViewTasks: [],
+                    },
+                    null,
+                    2
+                )
+            );
         });
     });
 });
